@@ -1,3 +1,12 @@
+
+
+print('------------------------------------------------------------------------')
+print('---------------                                    ---------------------')
+print('---------------            gminComputation         ---------------------')
+print('---------------                  V0.1              ---------------------')
+print('---------------                                    ---------------------')
+print('------------------------------------------------------------------------')
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
@@ -15,15 +24,11 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename, askdirectory
 
 
+
+time.sleep(0.5)
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
-print('------------------------------------------------------------------------')
-print('---------------                                    ---------------------')
-print('---------------            gminComputation         ---------------------')
-print('---------------                  V0.1              ---------------------')
-print('---------------                                    ---------------------')
-print('------------------------------------------------------------------------')
-time.sleep(0.5)
+
 
 
 
@@ -39,7 +44,7 @@ class ParseFile():
         skipfoot : number of rows to skip at the end of the txt file
 
         portability : allow manual definition of skiprows and delimiter
-                      test the file format and provide the good function for reading the file
+                    test the file format and provide the good function for reading the file
         '''
 
         try:
@@ -86,12 +91,6 @@ class ParseTreeFolder():
                 rwc_sup,
                 rwc_inf):
 
-        # import time
-        # # super().__init__()
-        # from tkinter import Tk
-        # from tkinter.filedialog import askopenfilename, askdirectory
-
-        
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
         self.YVAR = yvar
@@ -118,13 +117,13 @@ class ParseTreeFolder():
         self.file_or_folder = self._get_valid_input('What do you want to do ? Choose one of : ', ('1','2'))
 
         # fixed value for self.file_or_folder attribute, to be cleaned in the future
-       
+    
         # self.file_or_folder = self._get_valid_input('Type 1 to start : ', ('1'))
         if self.file_or_folder== '1':
             root_path = os.getcwd()
             Tk().withdraw()
             folder = askdirectory(title = 'What is the root folder that you want to parse ?',
-                                  initialdir = root_path)            
+                                initialdir = root_path)            
             self.path = folder
             print('\n\nroot path is {}'.format(self.path))
             
@@ -136,8 +135,7 @@ class ParseTreeFolder():
             print('\n')
 
 
-        # options allowed for the action method
-        # in the future it could be useful to add a combo method that would do '1' & '2' in the same time
+        # options allowed for the action method    
         self.choices = {
         "1": self._execute_computation,
         "2": self._execute_computation,
@@ -146,14 +144,13 @@ class ParseTreeFolder():
         # "4": self.erase,
         # "5": self.extract_strings_and_nums
         }       
-      
+    
 
     def _listdir_fullpath(self, p, s):
         '''
         method for creating a list of csv file
         '''
-        # import os
-        # import re
+
         d=os.path.join(p, s)
         return [os.path.join(d, f) for f in os.listdir(d) if f.endswith('.csv')]
 
@@ -162,10 +159,6 @@ class ParseTreeFolder():
         '''
         parse the folder tree and store the full path to target file in a list
         '''
-        # import os
-        # import time
-        # import re
-        # import pandas as pd
 
         if self.file_or_folder=='2':
             self.listOfFiles=[[self.path]]
@@ -175,8 +168,7 @@ class ParseTreeFolder():
             file_root=[]
             self.listOfFiles = []
 
-            # method with csv detection
-            
+            # method with csv detection            
             try:
                 # basedir
                 file_root = [os.path.join(self.path, f) for f in os.listdir(self.path) if f.endswith('.csv')]
@@ -193,8 +185,7 @@ class ParseTreeFolder():
                         self.listOfFiles.append(self._listdir_fullpath(p=pa, s=s))
             except:
                 print('no file detected within childs directory')
-                pass            
-    
+                pass       
 
             print('\n')
             try:
@@ -222,6 +213,7 @@ class ParseTreeFolder():
         2. Compute gmin between RWC boundaries (semi auto)
         3. Compute gmin between RWC boundaries (full auto)
         4. Exit
+
 
         """)
     
@@ -276,7 +268,6 @@ class ParseTreeFolder():
         '''
 
         skip = 0
-
         if self.file_or_folder == '2': 
             dffile = self._evaluate_file(elem = elem, skip = skip)        
         
@@ -357,13 +348,139 @@ class ParseTreeFolder():
             self.rep_name = temp_name
 
 
+
+
+
+    # def _parse_samples(self, dffile): 
+    #     '''
+    #     for each file, each unique ID will be analyzed
+    #     using a FUNC
+        
+    #     this function will ask if we want to work on raw or smoothed data
+    #     '''
+
+
+
+    #     # for each file, slice each unique ID
+    #     for sample in dffile[self.SAMPLE_ID].unique():            
+    #         self.sample = sample
+    #         df = dffile.loc[dffile[self.SAMPLE_ID]==sample,:].copy().reset_index()
+    #         return df
+    
+            # # transform time to TRUE date time
+            # try:
+            #     df['delta_time']
+            # except:
+            #     print('delta time column is leaking ... computing ...')
+            #     df['TIME_COL2'] = pd.to_datetime(df[self.TIME_COL] , infer_datetime_format=True)  
+            #     # compute time delta between measures
+            #     # WARNING : the points need to be regurlarly sampled with a constant frequency
+            #     df['delta_time'] = (df['TIME_COL2']-df['TIME_COL2'][0])   
+            #     # convert time to minute
+            #     df['delta_time'] = df['delta_time'].dt.total_seconds() / 60 # minutes 
+
+            # ################# PUT HERE THE RWC METHOD
+            # df, t80, t50 = self._compute_rwc(df)
+            # self.t80 = t80
+            # self.t50 = t50
+            # #########################################
+
+            # self.Xselected = df['delta_time'].values
+            # self.yselected = df[self.YVAR].copy().values
+            # #print(FRAC_P)
+            # #print(DELTA_MULTI)
+            # self.Ysmooth = self._smoother(self.Xselected , self.yselected, fr = FRAC_P, delta_multi = DELTA_MULTI)
+
+            # df['raw_data'] = df[self.YVAR].copy()
+            # df['smooth_data'] = self.Ysmooth.copy()
+            # df['Work_on_smooth'] = 'No'
+
+            # if not self.Conductance or self.Conductance:  
+            #     # strange code : but always ask for smoothing
+            #     # future : can be modified (either always allow smoothing and self.conductance is not useful or smoothinf is forbiden for robust differential)
+            #     plt.plot(self.Xselected, self.yselected, linestyle='-', marker='.', label = 'raw data')
+            #     plt.plot(self.Xselected, self.Ysmooth, linestyle='-', marker='.', label = 'smooth')
+            #     plt.title(self.sample)
+            #     plt.ylabel(self.sample)
+            #     plt.legend()    
+            #     # plt.pause(PAUSE_GRAPH/10)
+            #     plt.waitforbuttonpress(0)
+            #     # input()
+            #     plt.close() 
+
+            
+            #     print('''
+            #     Do you want to work on smoothed data ?
+
+            #     1: Yes
+            #     2: Yes, But I want to adjust smoothing parameters
+            #     3: No            
+            #     ''') 
+
+            #     what_to_do = self._get_valid_input('What do you want to do ? Choose one of : ', ('1','2','3'))
+            #     ########################################################################
+            #     if what_to_do=='1':
+            #         df[self.YVAR] = self.Ysmooth.copy()
+            #         df['Work_on_smooth'] = 'yes'
+            #     if what_to_do=='2':
+            #         while True:          
+            #             while True:
+                            
+            #                 try:
+            #                     _FRAC=0.1
+            #                     FRAC_P2 = float(input('What is the frac value ? (current value : {}) '.format(_FRAC)) or _FRAC)
+            #                     _FRAC = FRAC_P2
+            #                     break
+            #                 except ValueError:
+            #                     print("Oops!  That was no valid number.  Try again...")                    
+            #             while True:
+
+            #                 try:
+            #                     _DELTA_MULTI=0.01
+            #                     DELTA_MULTI2= float(input('What is the delta value ? (current value : {}) '.format(_DELTA_MULTI)) or _DELTA_MULTI)
+            #                     _DELTA_MULTI = DELTA_MULTI2
+            #                     break
+            #                 except ValueError:
+            #                     print("Oops!  That was no valid number.  Try again...")
+
+            #             self.Ysmooth = self._smoother(self.Xselected , self.yselected, fr = FRAC_P2, delta_multi = DELTA_MULTI2)
+            #             plt.plot(self.Xselected, self.yselected, linestyle='-', marker='.', label = 'raw data')
+            #             plt.plot(self.Xselected, self.Ysmooth, linestyle='-', marker='.', label = 'smooth')
+            #             plt.legend()    
+            #             # plt.pause(PAUSE_GRAPH/10)
+            #             plt.waitforbuttonpress(0)
+            #             # input()
+            #             plt.close()   
+            #             print('''
+            #             Do you want to keep this values?
+
+            #             1: Yes
+            #             2: No            
+            #             ''')
+            #             what_to_do = self._get_valid_input('What do you want to do ? Choose one of : ', ('1','2'))
+            #             if what_to_do == '1':
+            #                 break
+            #             if what_to_do == '2':
+            #                 pass
+                    
+            #         df[self.YVAR] = self.Ysmooth.copy()
+            #         df['Work_on_smooth'] = 'yes'
+        
+            # FUNC(df)
+
+
     def _execute_computation(self):
         '''
         parse all the files within the folder tree       
         '''
 
         print('\n Starting Gmin computation\n')
-    
+
+        
+        from .gmincomputation import gminComput
+
+        print('\nchoices is {}\n'.format(self.choices))
+
         self._create_saving_folder()
 
         dimfolder = len(self.listOfFiles)
@@ -389,7 +506,17 @@ class ParseTreeFolder():
                     dffile = self._robust_import(elem) 
 
                     print(dffile.head())
-                    print(dffile.shape)     
+                    print(dffile.shape)
+
+                    for sample in dffile[self.SAMPLE_ID].unique():            
+                        self.sample = sample
+                        df = dffile.loc[dffile[self.SAMPLE_ID]==sample,:].copy().reset_index()
+
+                        gmc = gminComput(self)
+
+                        gmc._compute_time_delta(df)
+
+                
                     
             #         # fit after rwc removal, if you want to use the full curve set tinf to 0 and tsup to 100
             #         # dffile, t80, t50 = self._compute_rwc(dffile)
@@ -435,4 +562,4 @@ class ParseTreeFolder():
             # pd.concat(list_of_df).reset_index().explode('Change_points').to_csv(temp_name+'RMSE_df_complete_full.csv')
             # pd.concat(list_of_df).reset_index().explode('Change_points').drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(temp_name+'RMSE_df_complete_full_No_duplicates.csv')
                 
-      
+    
