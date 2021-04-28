@@ -61,7 +61,7 @@ Default values for the RWC filtering are 80% and 50%, but thsi can be changed ma
 Data must be stored within files
 For a better files recognition, first row of the csv file should contain the string "conductance" otherwise all csv from a folder will be parsed
 
-Columns should be named as follow
+Columns should be named as follows:
 
 
 #### Quantitative columns
