@@ -420,7 +420,7 @@ class ParseTreeFolder():
                         if (self.action_choice == '2') | (self.action_choice == '3'):
                             print('Computing RWC')
                             if self.action_choice == '2':
-                                df, t80, t50 = gmc._compute_rwc(df)
+                                df, t80, t50, rwc_sup, rwc_inf= gmc._compute_rwc(df)
                             else:
                                 df, t80, t50, rwc_sup, rwc_inf = gmc._compute_rwc(df, visualise = False)
                             # self.t80 = t80
@@ -444,11 +444,14 @@ class ParseTreeFolder():
                         # print('tf2: ', temp_folder) 
                         temp_df['Campaign'] = temp_folder
                         
+
+                        # PROBLEM HERE ##################
                         temp_df['percentage_rwc_sup']=rwc_sup
                         temp_df['percentage_rwc_inf']=rwc_inf
 
                         temp_df['time_rwc_sup']=t80
                         temp_df['time_rwc_inf']=t50
+                        ################################
 
                         if (self.action_choice == '2') | (self.action_choice == '3'):
                             temp_df['Mode']='RWC filtered'

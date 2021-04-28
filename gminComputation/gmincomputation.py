@@ -174,8 +174,11 @@ class gminComput(ParseTreeFolder):
         # df = df[(rwc < rwc_thressup) & (rwc > rwc_thresinf)].copy()
         df = df[ (df.delta_time.values <= t50) & (df.delta_time.values >= t80)].copy()
 
-        print('t min : {} min'.format(df.delta_time.min().round(3)))
-        print('t max : {} min'.format(df.delta_time.max().round(3)))
+        # print('t min : {} min'.format(df.delta_time.min().round(3)))
+        # print('t max : {} min'.format(df.delta_time.max().round(3)))
+
+        print('t min : {} min'.format(np.round(df.delta_time.min(), 3)))
+        print('t max : {} min'.format(np.round(df.delta_time.max(), 3)))
 
         return df, t80, t50, rwc_sup, rwc_inf
     
