@@ -14,16 +14,16 @@ Current version is: **0.1**
 1. The program ask to chose:
     - A folder that will be parsed 
     - Some unique ID from a single file
-<img src="img/Screenshot from 2021-04-28 14-58-55.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 15-38-37.png" width="75%" height="75%">
 
 The program writes the number of files found
-<img src="img/Screenshot from 2021-04-28 14-59-08.png" width="75%" height="12%">
+<img src="img/Screenshot from 2021-04-28 15-39-10.png" width="75%" height="12%">
 
 #### Step 2
 2. You have to chose which method you will use:
     - Select time interval manually then compute gmin in the interval time
     - Filtering the data based on RWC and then compute gmin in the interval time
-<img src="img/Screenshot from 2021-04-28 14-59-13.png" width="75%" height="120%">
+<img src="img/Screenshot from 2021-04-28 15-39-13.png" width="75%" height="120%">
 
 #### Step 3 - Option 1
 3. If you chose the manual points selection:
