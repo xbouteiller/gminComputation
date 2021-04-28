@@ -17,22 +17,22 @@ Current version is: **0.1**
 <img src="img/Screenshot from 2021-04-28 14-58-55.png" width="75%" height="75%">
 
 The program writes the number of files found
-<img src="img/Screenshot from 2021-04-28 14-59-08.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 14-59-08.png" width="90%" height="90%">
 
 #### Step 2
 2. You have to chose which method you will use:
     - Select time interval manually then compute gmin in the interval time
     - Filtering the data based on RWC and then compute gmin in the interval time
-<img src="img/Screenshot from 2021-04-28 14-59-13.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 14-59-13.png" width="90%" height="90%">
 
-#### Step 3- Option 1
+#### Step 3 - Option 1
 3. If you chose the manual points selection:
     - You have to select two points on the curve
     - Gmin is computed based on a linear regression between these two points
 <img src="img/B17_LITU_BL_11.png" width="75%" height="75%">
 
 
-#### Step 3- Option 2
+#### Step 3 - Option 2
 4. If you chose the method based on RWC:
     - the semi auto method will plot curve each time
     - the full auto will precede to the gmin computation automatically
