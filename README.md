@@ -6,89 +6,6 @@ Current version is: **0.1**
 <img src="img/B17_LITU_BL_11.png" width="75%" height="75%">
 
 
-## Install Python version if needed
-
-[Anaconda](https://www.anaconda.com/products/individual)
-
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-
-
-## Download full folder from git
-
-1. Direct download
-
-From the green box  named 'clone' in the right corner > download .zip
-
-2. From the terminal
-
->
-> git clone https://github.com/xbouteiller/gminComputation.git
->
-
-
-## Install dependencies
-
->
-> pip install -r requirements.txt 
->
-
-
-## Install package
-
-Open a terminal in the DetectEvent folder, then :
-
->
-> python setup.py develop
->
-
-
-## Program Execution
-
-Copy the file **gminExec.py** in the desired folder
-
-Then open a terminal 
-
-
->
-> python gminExec.py
->
-
-## Installing updates
-
->
-> git pull origin main
->
-> python setup.py develop
->
-
-
-
-## Data
-
-Data must be stored within files
-For a better files recognition, first row of the csv file should contain the string "conductance" otherwise all csv from a folder will be parsed
-
-Columns should be named as follow
-
-
-#### Quantitative columns
-
-- weight_g : leaf weight as a function of time (g)
-- T_C : temperature (°C)
-- RH : Relative Humidity
-- Patm : atmospheric pressure (KPa)
-- Area_m2 : area of the leaf (m2)
-
-#### Qualitative columns
-
-- campaign : campaign name
-- sample_ID : ID of the sample, should be unique for each sample
-
-#### Date
-
-- date_time : time **(best with the format YEAR/MONTH/DAY HOUR:MINUTE )**
-
-
 
 ## Program flow
 
@@ -121,7 +38,6 @@ The program writes the number of files found
     - the full auto will precede to the gmin computation automatically
 
 
-
 5. The data are first filtered based on RWC:
 <img src="img/VIAL12.png" width="75%" height="75%">
 
@@ -138,5 +54,89 @@ Default values for the RWC filtering are 80% and 50%, but thsi can be changed ma
 #### Step 5
 7. Synthetic figures and data frames are saved within the output_fig and output_files folder
 
+
+## Data format
+
+Data must be stored within files
+For a better files recognition, first row of the csv file should contain the string "conductance" otherwise all csv from a folder will be parsed
+
+Columns should be named as follow
+
+
+#### Quantitative columns
+
+- weight_g : leaf weight as a function of time (g)
+- T_C : temperature (°C)
+- RH : Relative Humidity
+- Patm : atmospheric pressure (KPa)
+- Area_m2 : area of the leaf (m2)
+
+#### Qualitative columns
+
+- campaign : campaign name
+- sample_ID : ID of the sample, should be unique for each sample
+
+#### Date
+
+- date_time : time **(best with the format YEAR/MONTH/DAY HOUR:MINUTE )**
+
+
+
+## How to install?
+
+### Install Python version if needed
+
+[Anaconda](https://www.anaconda.com/products/individual)
+
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+
+### Download full folder from git
+
+1. Direct download
+
+From the green box  named 'clone' in the right corner > download .zip
+
+2. From the terminal
+
+>
+> git clone https://github.com/xbouteiller/gminComputation.git
+>
+
+
+### Install dependencies
+
+>
+> pip install -r requirements.txt 
+>
+
+
+### Install package
+
+Open a terminal in the DetectEvent folder, then :
+
+>
+> python setup.py develop
+>
+
+
+### Program Execution
+
+Copy the file **gminExec.py** in the desired folder
+
+Then open a terminal 
+
+
+>
+> python gminExec.py
+>
+
+### Installing updates
+
+>
+> git pull origin main
+>
+> python setup.py develop
+>
 
 
