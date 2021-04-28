@@ -97,16 +97,16 @@ Columns should be named as follow
 1. The program ask to chose:
     - A folder that will be parsed 
     - Some unique ID from a single file
-<img src="Screenshot from 2021-04-28 14-58-55.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 14-58-55.png" width="75%" height="75%">
 
 The program writes the number of files found
-<img src="Screenshot from 2021-04-28 14-59-08.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 14-59-08.png" width="75%" height="75%">
 
 #### Step 2
 2. You have to chose which method you will use:
     - Select time interval manually then compute gmin in the interval time
     - Filtering the data based on RWC and then compute gmin in the interval time
-<img src="Screenshot from 2021-04-28 14-59-13.png" width="75%" height="75%">
+<img src="img/Screenshot from 2021-04-28 14-59-13.png" width="75%" height="75%">
 
 ### Step 3- Option 1
 3. If you chose the manual points selection:
