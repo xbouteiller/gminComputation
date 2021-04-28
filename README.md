@@ -108,7 +108,7 @@ The program writes the number of files found
     - Filtering the data based on RWC and then compute gmin in the interval time
 <img src="img/Screenshot from 2021-04-28 14-59-13.png" width="75%" height="75%">
 
-### Step 3- Option 1
+#### Step 3- Option 1
 3. If you chose the manual points selection:
     - You have to select two points on the curve
     - Gmin is computed based on a linear regression between these two points
