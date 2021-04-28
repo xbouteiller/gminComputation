@@ -54,6 +54,7 @@ Default values for the RWC filtering are 80% and 50%, but thsi can be changed ma
 #### Step 5
 7. Synthetic figures and data frames are saved within the output_fig and output_files folder
 
+<br> </br>
 
 ## Data format
 
