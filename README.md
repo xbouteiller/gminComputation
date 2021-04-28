@@ -135,9 +135,6 @@ Default values for the RWC filtering are 80% and 50%, but thsi can be changed ma
 6. Gmin is computed based on a linear regression between the two boundaries of the RWC filtered data
 <img src="img/VIAL12 g.png" width="75%" height="75%">
 
-
-<img src="img/2021-03-08_15-44.png" width="75%" height="75%">
-
 #### Step 5
 7. Synthetic figures and data frames are saved within the output_fig and output_files folder
 
