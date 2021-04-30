@@ -31,10 +31,15 @@ From the green box  named 'clone' in the right corner > download .zip
 
 ### Install dependencies
 
+If you are on a windows platform:
 >
-> pip install -r requirements.txt 
+> pip install -r requirements-windows.txt 
 >
 
+If you are on a linux platform:
+>
+> pip install -r requirements-linux.txt 
+>
 
 ### Install package
 
