@@ -7,6 +7,65 @@ Current version is: **0.2**
 
 
 
+## How to install?
+
+### Install Python version if needed
+
+[Anaconda](https://www.anaconda.com/products/individual)
+
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+
+### Download full folder from git
+
+1. Direct download
+
+From the green box  named 'clone' in the right corner > download .zip
+
+2. From the terminal
+
+>
+> git clone https://github.com/xbouteiller/gminComputation.git
+>
+
+
+### Install dependencies
+
+>
+> pip install -r requirements.txt 
+>
+
+
+### Install package
+
+Open a terminal in the DetectEvent folder, then :
+
+>
+> python setup.py develop
+>
+
+
+### Program Execution
+
+Copy the file **gminExec.py** in the desired folder
+
+Then open a terminal 
+
+
+>
+> python gminExec.py
+>
+
+### Installing updates
+
+>
+> git pull origin main
+>
+> python setup.py develop
+>
+
+<br> </br>
+
 ## Program flow
 
 
@@ -82,62 +141,4 @@ Columns should be named as follows:
 - date_time : time **(best with the format YEAR/MONTH/DAY HOUR:MINUTE )**
 
 <br> </br>
-
-## How to install?
-
-### Install Python version if needed
-
-[Anaconda](https://www.anaconda.com/products/individual)
-
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-
-
-### Download full folder from git
-
-1. Direct download
-
-From the green box  named 'clone' in the right corner > download .zip
-
-2. From the terminal
-
->
-> git clone https://github.com/xbouteiller/gminComputation.git
->
-
-
-### Install dependencies
-
->
-> pip install -r requirements.txt 
->
-
-
-### Install package
-
-Open a terminal in the DetectEvent folder, then :
-
->
-> python setup.py develop
->
-
-
-### Program Execution
-
-Copy the file **gminExec.py** in the desired folder
-
-Then open a terminal 
-
-
->
-> python gminExec.py
->
-
-### Installing updates
-
->
-> git pull origin main
->
-> python setup.py develop
->
-
 

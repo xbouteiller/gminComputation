@@ -434,9 +434,13 @@ class ParseTreeFolder():
                         # plotting gmin
                         gs = gmc._plot_gmin(df) 
 
+                        gs.extend([rwc_sup, rwc_inf, t80, t50 ])
+                        print('gs: ', gs)
+
                         global_score.append(gs)   
 
-                        temp_df = pd.DataFrame(global_score, columns = ['Sample_ID', 'Interval_time','slope', 'Rsquared', 'Gmin_mean', 'pack'])
+                        temp_df = pd.DataFrame(global_score, columns = ['Sample_ID', 'Interval_time','slope', 'Rsquared', 'Gmin_mean', 'pack',\
+                             'percentage_rwc_sup', 'percentage_rwc_inf', 'time_rwc_sup', 'time_rwc_inf'])
                         temp_df2 = pd.DataFrame(temp_df["pack"].to_list(), columns=['K', 'VPD', 'mean_T', 'mean_RH', 'mean_Patm', 'mean_area'])
                         temp_df = temp_df.drop(columns='pack')
                         temp_df = pd.concat([temp_df,temp_df2], axis = 1)
@@ -446,11 +450,11 @@ class ParseTreeFolder():
                         
 
                         # PROBLEM HERE ##################
-                        temp_df['percentage_rwc_sup']=rwc_sup
-                        temp_df['percentage_rwc_inf']=rwc_inf
+                        # temp_df['percentage_rwc_sup']=rwc_sup
+                        # temp_df['percentage_rwc_inf']=rwc_inf
 
-                        temp_df['time_rwc_sup']=t80
-                        temp_df['time_rwc_inf']=t50
+                        # temp_df['time_rwc_sup']=t80
+                        # temp_df['time_rwc_inf']=t50
                         ################################
 
                         if (self.action_choice == '2') | (self.action_choice == '3'):
