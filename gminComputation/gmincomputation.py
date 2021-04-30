@@ -228,7 +228,8 @@ class gminComput(ParseTreeFolder):
                 slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
                 gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
                 ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2) 
-                plt.waitforbuttonpress(0)
+                
+                plt.waitforbuttonpress(1)
 
                 
                 figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
