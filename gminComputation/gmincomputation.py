@@ -203,7 +203,7 @@ class gminComput(ParseTreeFolder):
         '''
         gmin_mean=''
         list_of_param=['', '', '', '', '', '']      
-
+        selected_points=''
        
         # plot the figure of the detected crossing sections  
         #  
@@ -281,7 +281,7 @@ class gminComput(ParseTreeFolder):
             gs = [TITLE, [i[0] for i in selected_points ], slope, rsquared, gmin_mean, list_of_param]
         else:       
             gs = [TITLE, Xidx, slope, rsquared, gmin_mean, list_of_param]
-        return gs
+        return gs, selected_points
 
 
 

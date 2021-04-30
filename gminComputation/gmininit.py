@@ -432,21 +432,30 @@ class ParseTreeFolder():
                             rwc_inf = None
 
                         # plotting gmin
-                        gs = gmc._plot_gmin(df) 
+                        gs, selected_points = gmc._plot_gmin(df)
+                        if (self.action_choice == '1'):
+                            t80 = np.max(selected_points[0][0],0)
+                            t50 = selected_points[1][0]
+
+
 
                         gs.extend([rwc_sup, rwc_inf, t80, t50 ])
-                        print('gs: ', gs)
+                        # print('gs: ', gs)
 
                         global_score.append(gs)   
 
                         temp_df = pd.DataFrame(global_score, columns = ['Sample_ID', 'Interval_time','slope', 'Rsquared', 'Gmin_mean', 'pack',\
-                             'percentage_rwc_sup', 'percentage_rwc_inf', 'time_rwc_sup', 'time_rwc_inf'])
+                             'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf'])
                         temp_df2 = pd.DataFrame(temp_df["pack"].to_list(), columns=['K', 'VPD', 'mean_T', 'mean_RH', 'mean_Patm', 'mean_area'])
                         temp_df = temp_df.drop(columns='pack')
                         temp_df = pd.concat([temp_df,temp_df2], axis = 1)
 
                         # print('tf2: ', temp_folder) 
                         temp_df['Campaign'] = temp_folder
+
+                        temp_df = temp_df.drop(columns='Interval_time')
+                        temp_df = temp_df[['Campaign','Sample_ID', 'Gmin_mean', 'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf', \
+                                            'slope', 'Rsquared', 'K', 'VPD', 'mean_T', 'mean_RH', 'mean_Patm', 'mean_area']]
                         
 
                         # PROBLEM HERE ##################
@@ -473,9 +482,10 @@ class ParseTreeFolder():
         # save the appended df in a global file
         # explode remove the square bracket [] from cells and convert to multiline
         # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
-        pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
-        pd.concat(list_of_df).reset_index().explode('Interval_time').drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
-            
+        # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
+        # pd.concat(list_of_df).reset_index().explode('Interval_time').drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
+        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
+
         
 
                         
