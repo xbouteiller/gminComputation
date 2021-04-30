@@ -51,6 +51,19 @@ class gminComput(ParseTreeFolder):
 
         self.fig_folder = figfolder
         self.rep_name = repfolder
+    
+    def _get_valid_input(self, input_string, valid_options):
+            '''
+            useful function in order to ask input value and assess that the answer is allowed
+
+            input_string : question
+            valid_options : authorized answers
+            '''
+            input_string += "({}) ".format(", ".join(valid_options))
+            response = input(input_string)
+            while response.lower() not in valid_options:
+                response = input(input_string)
+            return response
 
     def _compute_time_delta(self, df):
         # transform time to TRUE date time
@@ -209,11 +222,42 @@ class gminComput(ParseTreeFolder):
            
         if (self.action_choice =='1'):
             print('\nPlease select two points on the figure')
-            # plt.waitforbuttonpress(0)  
-            selected_points = fig.ginput(2)
-            slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
-            ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2) 
-            gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0]) 
+            # plt.waitforbuttonpress(0)
+            while True: 
+                selected_points = fig.ginput(2)
+                slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
+                gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
+                ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2) 
+                plt.waitforbuttonpress(0)
+
+                
+                figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+                plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+                plt.close()  
+                # input()
+                print('''
+                Do you want to try other values ?
+
+                1: Yes
+                2: No
+                ''') 
+                keepgoing = self._get_valid_input('Your choice', ('1', '2'))
+                if (keepgoing == '1'):
+                    TITLE = str(df[self.SAMPLE_ID].unique()[0])            
+            
+                    fig, ax1 = plt.subplots()
+
+                    plt.title(TITLE)
+                    color = 'tab:blue'
+                    ax1.set_xlabel('time (min)')
+                    ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+                    ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
+                    ax1.tick_params(axis='y', labelcolor=color)
+                    ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
+        
+                else:
+                    break
+
 
         else:
             Xidx = df['delta_time'].values[0]
@@ -223,14 +267,14 @@ class gminComput(ParseTreeFolder):
             
             # close the graph on a click
             # plt.pause(PAUSE_GRAPH)
-        if (self.action_choice =='2') | (self.action_choice =='1') :
-            plt.waitforbuttonpress(0)
+            if (self.action_choice =='2'):
+                plt.waitforbuttonpress(0)
 
-        figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
-        plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+            figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+            plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
 
-        # input()
-        plt.close()   
+            # input()
+            plt.close()   
 
         
         if (self.action_choice =='1') :
@@ -295,7 +339,11 @@ class gminComput(ParseTreeFolder):
             X = Xselected[Xselected >= Xidx1].copy()
             y = yselected[Xselected >= Xidx1].copy()
 
-        slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
+        try:
+            slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
+        except:
+            print('Unable to fit regression')
+            slope, intercept, r_value, p_value, std_err = 0, 0, 0, 0, 0
 
         fitted_values = slope*X + intercept
         rsquared = r_value**2
