@@ -244,7 +244,7 @@ class gminComput(ParseTreeFolder):
                 y: Yes
                 n: No
                 ''') 
-                keepgoing = self._get_valid_input('Your choice', ('y', 'n'))
+                keepgoing = self._get_valid_input('Your choice: ', ('y', 'n'))
                 if (keepgoing == 'y'):
                     TITLE = str(df[self.SAMPLE_ID].unique()[0])            
             
