@@ -194,6 +194,21 @@ class gminComput(ParseTreeFolder):
         print('t max : {} min'.format(np.round(df.delta_time.max(), 3)))
 
         return df, t80, t50, rwc_sup, rwc_inf
+
+    def _graph_skeleton(self, df):
+        TITLE = str(df[self.SAMPLE_ID].unique()[0])            
+            
+        fig, ax1 = plt.subplots()
+
+        plt.title(TITLE)
+        color = 'tab:blue'
+        ax1.set_xlabel('time (min)')
+        ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+        ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
+        ax1.tick_params(axis='y', labelcolor=color)
+        ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])  
+
+        return fig, ax1, TITLE
     
 
     def _plot_gmin(self, df):
@@ -207,17 +222,19 @@ class gminComput(ParseTreeFolder):
        
         # plot the figure of the detected crossing sections  
         #  
-        TITLE = str(df[self.SAMPLE_ID].unique()[0])            
+        # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
             
-        fig, ax1 = plt.subplots()
+        # fig, ax1 = plt.subplots()
 
-        plt.title(TITLE)
-        color = 'tab:blue'
-        ax1.set_xlabel('time (min)')
-        ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
-        ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
-        ax1.tick_params(axis='y', labelcolor=color)
-        ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
+        # plt.title(TITLE)
+        # color = 'tab:blue'
+        # ax1.set_xlabel('time (min)')
+        # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+        # ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
+        # ax1.tick_params(axis='y', labelcolor=color)
+        # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])
+
+        fig, ax1, TITLE = self._graph_skeleton(df)
         
            
         if (self.action_choice =='1'):
@@ -225,7 +242,12 @@ class gminComput(ParseTreeFolder):
             # plt.waitforbuttonpress(0)
             while True: 
                 selected_points = fig.ginput(2)
+                plt.close()
+
                 slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
+
+
+                fig, ax1, TITLE = self._graph_skeleton(df)
                 ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
                 gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
 
@@ -247,17 +269,18 @@ class gminComput(ParseTreeFolder):
                 ''') 
                 keepgoing = self._get_valid_input('Your choice: ', ('y', 'n'))
                 if (keepgoing == 'y'):
-                    TITLE = str(df[self.SAMPLE_ID].unique()[0])            
+                    fig, ax1, TITLE = self._graph_skeleton(df)
+                    # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
             
-                    fig, ax1 = plt.subplots()
+                    # fig, ax1 = plt.subplots()
 
-                    plt.title(TITLE)
-                    color = 'tab:blue'
-                    ax1.set_xlabel('time (min)')
-                    ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
-                    ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
-                    ax1.tick_params(axis='y', labelcolor=color)
-                    ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
+                    # plt.title(TITLE)
+                    # color = 'tab:blue'
+                    # ax1.set_xlabel('time (min)')
+                    # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+                    # ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
+                    # ax1.tick_params(axis='y', labelcolor=color)
+                    # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
         
                 else:
                     break
