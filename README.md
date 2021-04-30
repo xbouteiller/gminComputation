@@ -46,7 +46,7 @@ If you are on a linux platform:
 Open a terminal in the DetectEvent folder, then :
 
 >
-> python setup.py develop
+> python setup.py install
 >
 
 
