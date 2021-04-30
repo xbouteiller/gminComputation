@@ -1,9 +1,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal
-from loess.loess_1d import loess_1d
-from statsmodels.nonparametric.smoothers_lowess import lowess
+# from scipy import signal
+# from loess.loess_1d import loess_1d
+# from statsmodels.nonparametric.smoothers_lowess import lowess
 import pandas as pd
 import time
 import sys
@@ -128,8 +128,8 @@ class gminComput(ParseTreeFolder):
         t80 = np.min(df.loc[rwc == rwc_sup, "delta_time"].values)
         t50 = np.max(df.loc[rwc == rwc_inf, "delta_time"].values)
 
-        print('Detected RWC SUP {}% at {} min'.format(rwc_thressup,t80))
-        print('Detected RWC INF {}% at {} min'.format(rwc_thresinf,t50))
+        print('Detected RWC SUP {}% at {:.2f} min'.format(rwc_thressup,t80))
+        print('Detected RWC INF {}% at {:.2f} min'.format(rwc_thresinf,t50))
         
 
         if t80>=t50:
@@ -142,8 +142,8 @@ class gminComput(ParseTreeFolder):
             rwc_sup = 100
             rwc_inf = 0
 
-            print('New: Detected RWC SUP 0% at {} min'.format(t80))
-            print('New: Detected RWC INF 100% at {} min'.format(t50))
+            print('New: Detected RWC SUP 0% at {:.2f} min'.format(t80))
+            print('New: Detected RWC INF 100% at {:.2f} min'.format(t50))
         
 
         TITLE = str(df[self.SAMPLE_ID].unique()[0])            

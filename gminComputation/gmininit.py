@@ -9,9 +9,9 @@ print('------------------------------------------------------------------------'
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal
-from loess.loess_1d import loess_1d
-from statsmodels.nonparametric.smoothers_lowess import lowess
+# from scipy import signal
+# from loess.loess_1d import loess_1d
+# from statsmodels.nonparametric.smoothers_lowess import lowess
 import pandas as pd
 import time
 import sys
@@ -484,7 +484,7 @@ class ParseTreeFolder():
         # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
         # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
         # pd.concat(list_of_df).reset_index().explode('Interval_time').drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
-        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
+        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/GMIN_df_complete.csv')
 
         
 
