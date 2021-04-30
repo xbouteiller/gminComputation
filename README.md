@@ -1,7 +1,7 @@
 # Python Program for computing leaf conductance
 
 
-Current version is: **0.4**
+Current version is: **0.5**
 
 <img src="img/B17_LITU_BL_11.png" width="75%" height="75%">
 
@@ -56,12 +56,35 @@ Then open a terminal
 > python gminExec.py
 >
 
+
+
+I also provided some additonal for simplifying execution in the **exec** folder
+
+if you are on a windows platform:
+
+- create a shorcut for the *launch.bat* file
+- place the shortcut in an ampty folder and double click on it
+- the program will be executed in the terminal and files & figures will be saved in the empy folder
+
+
+if you are on a linux platform:
+
+1. in the *bash-ex-linux.sh* file
+    - replace the path */home/xavier/anaconda3/bin/python* with the path linking to your python version 
+    - if you use anaconda you should have to replace only *xavier* with you user name
+    - replace the path */home/xavier/Documents/development/gmin/gminExec.py* with the correct path linking to the *gminExec.py* file
+2. in the *launch-linux.desktop*
+    - replace the path */home/xavier/Documents/development/gmin/exec/bash-ex-linux.sh* with the correct path to *bash-ex-linux.sh*
+    - you can now copy the *launch-linux.desktop* file in a new folder and double click on it
+
+
+
 ### Installing updates
 
 >
 > git pull origin main
 >
-> python setup.py develop
+> python setup.py install
 >
 
 <br> </br>
