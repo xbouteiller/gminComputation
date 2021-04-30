@@ -229,8 +229,9 @@ class gminComput(ParseTreeFolder):
                 ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
                 gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
                 
-
-                # plt.show(block=False)
+                plt.show(block=False)
+                print('just before press')
+                
                 plt.waitforbuttonpress(0)
 
                 
