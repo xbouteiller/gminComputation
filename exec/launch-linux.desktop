@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=CaviClean
+Version=v5.8
+Exec=bash /home/xavier/Documents/development/gmin/exec/bash-ex-linux.sh
+Terminal=true
+Type=Application
