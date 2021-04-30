@@ -226,8 +226,7 @@ class gminComput(ParseTreeFolder):
             while True: 
                 selected_points = fig.ginput(2)
                 slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
-                ax1.plot(Xreg, fitted_values, c = 'black', lw = 2) 
-                ax1.plot(Xreg, fitted_values, c = 'black', lw = 2) 
+                ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
                 gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
                 
 
