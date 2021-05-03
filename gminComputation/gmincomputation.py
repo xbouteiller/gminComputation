@@ -234,59 +234,82 @@ class gminComput(ParseTreeFolder):
         # ax1.tick_params(axis='y', labelcolor=color)
         # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])
 
-        fig, ax1, TITLE = self._graph_skeleton(df)
+       
         
            
         if (self.action_choice =='1'):
             print('\nPlease select two points on the figure')
             # plt.waitforbuttonpress(0)
-            while True: 
-                selected_points = fig.ginput(2)
-                plt.close()
-
-                slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
-
-
-                fig, ax1, TITLE = self._graph_skeleton(df)
-                ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
-                gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
-
-                # plt.show(block=False)
-                # print('just before press')
-                
-                plt.waitforbuttonpress(0)
-
-                
-                figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
-                plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
-                plt.close()  
-                # input()
-                print('''
-                Do you want to try other values ?
-
-                y: Yes
-                n: No
-                ''') 
-                keepgoing = self._get_valid_input('Your choice: ', ('y', 'n'))
-                if (keepgoing == 'y'):
+            while True:
+                try:
+                    
                     fig, ax1, TITLE = self._graph_skeleton(df)
-                    # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
-            
-                    # fig, ax1 = plt.subplots()
+                    selected_points = fig.ginput(2)
+                    plt.show(block=False)
+                    plt.close('all')
+                    
+                    
+                    slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
+                    
 
-                    # plt.title(TITLE)
-                    # color = 'tab:blue'
-                    # ax1.set_xlabel('time (min)')
-                    # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+                    
+                    fig, ax1, TITLE = self._graph_skeleton(df)
+                    ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
+                    gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
+
+                    plt.show(block=False)
+                    # print('just before press')
+                    
+                    plt.waitforbuttonpress(0)                   
+
+                    
+                    figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+                    plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+                    
+                    plt.close('all')  
+
+                    print('''
+                    Enter ctrl + c to stop the loop
+                    ''')
+
+                    time.sleep(1.5)
+                   
+                    # input()
+                    # print('''
+                    # Do you want to keep these values ?
+
+                    # y: Yes
+                    # n: No
+                    # ''') 
+                    # keepgoing = self._get_valid_input('Your choice: ', ('y', 'n'))
+                    # if (keepgoing == 'n'):
+                    #     fig, ax1, TITLE = self._graph_skeleton(df)
+                    #     # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
+                
+                    #     # fig, ax1 = plt.subplots()
+
+                    #     # plt.title(TITLE)
+                    #     # color = 'tab:blue'
+                    #     # ax1.set_xlabel('time (min)')
+                    #     # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
+                    #     # 
                     # ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
-                    # ax1.tick_params(axis='y', labelcolor=color)
-                    # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
-        
-                else:
+                    #     # ax1.tick_params(axis='y', labelcolor=color)
+                    #     # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
+            
+                    # else:
+                    #     break
+                except KeyboardInterrupt:
+                    print('''
+                    interrupted!
+                    Plotting a new sample!
+                    ''')
                     break
+                
 
 
         else:
+            fig, ax1, TITLE = self._graph_skeleton(df)
             Xidx = df['delta_time'].values[0]
             slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,Xidx1=Xidx)
             ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2)
