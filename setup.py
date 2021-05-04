@@ -3,7 +3,7 @@ from setuptools import setup
 
 # Create proper setup to be used by pip
 setup(name='gminComputation',
-      version='0.6',
+      version='0.7',
       description='Compute gmin based on RWC',
       author='Xavier Bouteiller',
       author_email='xavier.bouteiller@u-bordeaux.fr',
