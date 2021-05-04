@@ -272,7 +272,7 @@ class gminComput(ParseTreeFolder):
                     Enter ctrl + c to stop the loop
                     ''')
 
-                    time.sleep(1.5)
+                    time.sleep(2)
                    
                     # input()
                     # print('''
