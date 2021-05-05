@@ -1,6 +1,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+
 # from scipy import signal
 # from loess.loess_1d import loess_1d
 # from statsmodels.nonparametric.smoothers_lowess import lowess
@@ -208,6 +210,8 @@ class gminComput(ParseTreeFolder):
         ax1.tick_params(axis='y', labelcolor=color)
         ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])  
 
+        
+
         return fig, ax1, TITLE
     
 
@@ -234,7 +238,17 @@ class gminComput(ParseTreeFolder):
         # ax1.tick_params(axis='y', labelcolor=color)
         # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])
 
-       
+        def move_figure(f, x, y):
+                """Move figure's upper left corner to pixel (x, y)"""
+                backend = matplotlib.get_backend()
+                if backend == 'TkAgg':
+                    f.canvas.manager.window.wm_geometry("+%d+%d" % (x, y))
+                elif backend == 'WXAgg':
+                    f.canvas.manager.window.SetPosition((x, y))
+                else:
+                    # This works for QT and GTK
+                    # You can also use window.setGeometry
+                    f.canvas.manager.window.move(x, y)       
         
            
         if (self.action_choice =='1'):
@@ -244,7 +258,21 @@ class gminComput(ParseTreeFolder):
                 try:
                     
                     fig, ax1, TITLE = self._graph_skeleton(df)
+                    
+                    try:
+                        move_figure(fig, 800, 0) 
+                        # print('fig pos set')
+                    except:
+                        print('fig pos not set')  
+
                     selected_points = fig.ginput(2)
+
+                    try:
+                        move_figure(fig, 800, 0) 
+                        # print('fig pos set')
+                    except:
+                        print('fig pos not set')   
+
                     plt.show(block=False)
                     plt.close('all')
                     
@@ -256,6 +284,13 @@ class gminComput(ParseTreeFolder):
                     fig, ax1, TITLE = self._graph_skeleton(df)
                     ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
                     gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
+
+                    try:
+                        move_figure(fig, 800, 0) 
+                        # print('fig pos set')
+                    except:
+                        print('fig pos not set')              
+                        
 
                     plt.show(block=False)
                     # print('just before press')
