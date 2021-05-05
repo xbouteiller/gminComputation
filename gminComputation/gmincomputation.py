@@ -110,27 +110,34 @@ class gminComput(ParseTreeFolder):
         rwc_thressup = self.rwc_sup
         rwc_thresinf = self.rwc_inf
 
+
+        def find_nearest(a, a0):
+            "Element in nd array `a` closest to the scalar value `a0`"
+            idx = np.abs(a - a0).argmin()            
+            return a.flat[idx]  
+
+
         try:
             dry = np.mean(df[self.DW].values[-int(nmean):])
-            saturated = np.mean(df[self.FW].values[0:nmean])## or np.max() ??
+            saturated = np.mean(df[self.FW].values[0:nmean])## or np.max() ??        
             print('Using provided dry and fresh weight')
             method_of_dfw = 'provided_dry_fresh_weight'
+            print('dry: ', dry)
+            print('nan dry: ', np.isnan(dry))
+            if np.isnan(dry) or np.isnan(saturated):
+                print('Dry or Fresh weight should not be Nan') 
+                raise ValueError
         except:
             dry = np.mean(df[self.YVAR].values[-int(nmean):])
             saturated = np.mean(df[self.YVAR].values[0:nmean])## or np.max() ??
             print('Using initial & last 20 values to compute fresh and dry weight')
             method_of_dfw = 'estimated_dry_fresh_weight'
 
-        rwc = 100*((df[self.YVAR].values-dry)/(saturated-dry))            
-
-        def find_nearest(a, a0):
-            "Element in nd array `a` closest to the scalar value `a0`"
-            idx = np.abs(a - a0).argmin()
-            
-            return a.flat[idx]  
+        rwc = 100*((df[self.YVAR].values-dry)/(saturated-dry))
 
         rwc_sup = find_nearest(rwc, rwc_thressup)
-        rwc_inf = find_nearest(rwc, rwc_thresinf)  
+        rwc_inf = find_nearest(rwc, rwc_thresinf) 
+          
 
         # print('RWC boundary: [{}% .. {}%]'.format(np.round(rwc_sup,2), np.round(rwc_inf,2)))
         
