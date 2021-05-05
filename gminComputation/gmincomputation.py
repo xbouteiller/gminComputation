@@ -103,7 +103,7 @@ class gminComput(ParseTreeFolder):
                     f.canvas.manager.window.move(x, y)
 
 
-    def _compute_rwc(self, df, nmean = 20,  visualise = True):           
+    def _compute_rwc(self, df, nmean = 21,  visualise = True):           
 
         from matplotlib.patches import Circle, Wedge, Polygon
 
@@ -118,18 +118,19 @@ class gminComput(ParseTreeFolder):
 
 
         try:
-            dry = np.mean(df[self.DW].values[-int(nmean):])
-            saturated = np.mean(df[self.FW].values[0:nmean])## or np.max() ??        
+            dry = np.nanmean(df[self.DW].values[-int(nmean):])
+            saturated = np.nanmean(df[self.FW].values[0:nmean])## or np.max() ??        
             print('Using provided dry and fresh weight')
             method_of_dfw = 'provided_dry_fresh_weight'
-            # print('dry: ', dry)
+            print('dry: ', dry)
+            print('fresh: ', saturated)
             # print('nan dry: ', np.isnan(dry))
             if np.isnan(dry) or np.isnan(saturated):
                 print('Dry or Fresh weight should not be Nan') 
                 raise ValueError
         except:
-            dry = np.mean(df[self.YVAR].values[-int(nmean):])
-            saturated = np.mean(df[self.YVAR].values[0:nmean])## or np.max() ??
+            dry = np.nanmean(df[self.YVAR].values[-int(nmean):])
+            saturated = np.nanmean(df[self.YVAR].values[0:nmean])## or np.max() ??
             print('Using initial & last 20 values to compute fresh and dry weight')
             method_of_dfw = 'estimated_dry_fresh_weight'
 
