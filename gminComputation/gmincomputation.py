@@ -122,8 +122,8 @@ class gminComput(ParseTreeFolder):
             saturated = np.mean(df[self.FW].values[0:nmean])## or np.max() ??        
             print('Using provided dry and fresh weight')
             method_of_dfw = 'provided_dry_fresh_weight'
-            print('dry: ', dry)
-            print('nan dry: ', np.isnan(dry))
+            # print('dry: ', dry)
+            # print('nan dry: ', np.isnan(dry))
             if np.isnan(dry) or np.isnan(saturated):
                 print('Dry or Fresh weight should not be Nan') 
                 raise ValueError
