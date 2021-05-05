@@ -5,7 +5,7 @@ Current version is: **0.8**
 
 <img src="img/B17_LITU_BL_11.png" width="75%" height="75%">
 
-
+**NEW: you can now provide dry and fresh weight in the data frame to compute RWC: see sections program flow step3 and data format below**
 
 ## How to install?
 
@@ -130,11 +130,14 @@ Default values for the RWC filtering are 80% and 50%, but thsi can be changed ma
 > python gminExec.py -rs 90 -ri 20 # It is a shortcut for the code above
 >
 
-6. Gmin is computed based on a linear regression between the two boundaries of the RWC filtered data
+6. **New** if the columns Dry_weight and Fresh_weight are provided, he software use the provided values to compute RWC    
+
+
+7. Gmin is computed based on a linear regression between the two boundaries of the RWC filtered data
 <img src="img/VIAL12 g.png" width="75%" height="75%">
 
 #### Step 5
-7. Synthetic figures and data frames are saved within the output_fig and output_files folder
+8. Synthetic figures and data frames are saved within the output_fig and output_files folder
 
 <br> </br>
 
@@ -153,6 +156,8 @@ Columns should be named as follows:
 - RH : Relative Humidity
 - Patm : atmospheric pressure (KPa)
 - Area_m2 : area of the leaf (m2)
+- Fresh_weight : fresh (saturated) weight of the leaf (g)
+- Dry_weight : dry weight of the leaf (g)
 
 #### Qualitative columns
 
