@@ -3,7 +3,7 @@
 print('------------------------------------------------------------------------')
 print('---------------                                    ---------------------')
 print('---------------            gminComputation         ---------------------')
-print('---------------                  V0.7              ---------------------')
+print('---------------                  V0.8              ---------------------')
 print('---------------                                    ---------------------')
 print('------------------------------------------------------------------------')
 
@@ -89,7 +89,9 @@ class ParseTreeFolder():
                 patm,
                 area,               
                 rwc_sup,
-                rwc_inf):
+                rwc_inf,
+                fresh_weight,
+                dry_weight):
 
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
@@ -97,7 +99,10 @@ class ParseTreeFolder():
         self.T = temp
         self.RH = rh
         self.PATM = patm
-        self.AREA = area     
+        self.AREA = area   
+
+        self.FW = fresh_weight
+        self.DW = dry_weight  
 
         self.rwc_sup = rwc_sup
         self.rwc_inf = rwc_inf
@@ -412,7 +417,9 @@ class ParseTreeFolder():
                                         self.rwc_inf, 
                                         self.action_choice,
                                         self.fig_folder,
-                                        self.rep_name)
+                                        self.rep_name,
+                                        self.FW,
+                                        self.DW)
                         # computing time delta
                         df = gmc._compute_time_delta(df)
 
@@ -420,9 +427,9 @@ class ParseTreeFolder():
                         if (self.action_choice == '2') | (self.action_choice == '3'):
                             print('Computing RWC')
                             if self.action_choice == '2':
-                                df, t80, t50, rwc_sup, rwc_inf= gmc._compute_rwc(df)
+                                df, t80, t50, rwc_sup, rwc_inf, method_of_dfw= gmc._compute_rwc(df)
                             else:
-                                df, t80, t50, rwc_sup, rwc_inf = gmc._compute_rwc(df, visualise = False)
+                                df, t80, t50, rwc_sup, rwc_inf, method_of_dfw = gmc._compute_rwc(df, visualise = False)
                             # self.t80 = t80
                             # self.t50 = t50
                         else:
@@ -430,6 +437,7 @@ class ParseTreeFolder():
                             t50 = None
                             rwc_sup = None
                             rwc_inf = None
+                            method_of_dfw = None
 
                         # plotting gmin
                         gs, selected_points = gmc._plot_gmin(df)
@@ -439,13 +447,13 @@ class ParseTreeFolder():
 
 
 
-                        gs.extend([rwc_sup, rwc_inf, t80, t50 ])
+                        gs.extend([rwc_sup, rwc_inf, t80, t50, method_of_dfw])
                         # print('gs: ', gs)
 
                         global_score.append(gs)   
 
                         temp_df = pd.DataFrame(global_score, columns = ['Sample_ID', 'Interval_time','slope', 'Rsquared', 'Gmin_mean', 'pack',\
-                             'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf'])
+                             'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf', 'method_of_rwc'])
                         temp_df2 = pd.DataFrame(temp_df["pack"].to_list(), columns=['K', 'VPD', 'mean_T', 'mean_RH', 'mean_Patm', 'mean_area'])
                         temp_df = temp_df.drop(columns='pack')
                         temp_df = pd.concat([temp_df,temp_df2], axis = 1)
@@ -454,7 +462,7 @@ class ParseTreeFolder():
                         temp_df['Campaign'] = temp_folder
 
                         temp_df = temp_df.drop(columns='Interval_time')
-                        temp_df = temp_df[['Campaign','Sample_ID', 'Gmin_mean', 'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf', \
+                        temp_df = temp_df[['Campaign','Sample_ID', 'Gmin_mean', 'percentage_rwc_sup', 'percentage_rwc_inf', 'time_sup', 'time_inf', 'method_of_rwc', \
                                             'slope', 'Rsquared', 'K', 'VPD', 'mean_T', 'mean_RH', 'mean_Patm', 'mean_area']]
                         
 
@@ -467,7 +475,7 @@ class ParseTreeFolder():
                         ################################
 
                         if (self.action_choice == '2') | (self.action_choice == '3'):
-                            temp_df['Mode']='RWC filtered'
+                            temp_df['Mode']='RWC filtered'                             
                         else:
                             temp_df['Mode']='Manual Selection'
 

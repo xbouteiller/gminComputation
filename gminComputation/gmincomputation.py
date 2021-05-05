@@ -37,14 +37,20 @@ class gminComput(ParseTreeFolder):
                 rwc_inf,
                 choice,
                 figfolder,
-                repfolder):
+                repfolder,
+                fresh_weight,
+                dry_weight ):
+
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
         self.YVAR = yvar
         self.T = temp
         self.RH = rh
         self.PATM = patm
-        self.AREA = area     
+        self.AREA = area  
+
+        self.FW = fresh_weight
+        self.DW = dry_weight    
 
         self.rwc_sup = rwc_sup
         self.rwc_inf = rwc_inf 
@@ -84,7 +90,19 @@ class gminComput(ParseTreeFolder):
 
         return df
 
-    
+    def _move_figure(self,f, x, y):
+                """Move figure's upper left corner to pixel (x, y)"""
+                backend = matplotlib.get_backend()
+                if backend == 'TkAgg':
+                    f.canvas.manager.window.wm_geometry("+%d+%d" % (x, y))
+                elif backend == 'WXAgg':
+                    f.canvas.manager.window.SetPosition((x, y))
+                else:
+                    # This works for QT and GTK
+                    # You can also use window.setGeometry
+                    f.canvas.manager.window.move(x, y)
+
+
     def _compute_rwc(self, df, nmean = 20,  visualise = True):           
 
         from matplotlib.patches import Circle, Wedge, Polygon
@@ -92,8 +110,17 @@ class gminComput(ParseTreeFolder):
         rwc_thressup = self.rwc_sup
         rwc_thresinf = self.rwc_inf
 
-        dry = np.mean(df[self.YVAR].values[-int(nmean):])
-        saturated = np.mean(df[self.YVAR].values[0:nmean])## or np.max() ??
+        try:
+            dry = np.mean(df[self.DW].values[-int(nmean):])
+            saturated = np.mean(df[self.FW].values[0:nmean])## or np.max() ??
+            print('Using provided dry and fresh weight')
+            method_of_dfw = 'provided_dry_fresh_weight'
+        except:
+            dry = np.mean(df[self.YVAR].values[-int(nmean):])
+            saturated = np.mean(df[self.YVAR].values[0:nmean])## or np.max() ??
+            print('Using initial & last 20 values to compute fresh and dry weight')
+            method_of_dfw = 'estimated_dry_fresh_weight'
+
         rwc = 100*((df[self.YVAR].values-dry)/(saturated-dry))            
 
         def find_nearest(a, a0):
@@ -180,7 +207,12 @@ class gminComput(ParseTreeFolder):
         # plt.pause(PAUSE_GRAPH)
         #plt.show()
         if visualise:
-            # plt.show()
+            try:
+                self._move_figure(fig, 800, 0) 
+                # print('fig pos set')
+            except:
+                print('fig pos not set') 
+            plt.show(block=False)
             plt.waitforbuttonpress(0)
             # input()
         plt.close() 
@@ -195,7 +227,7 @@ class gminComput(ParseTreeFolder):
         print('t min : {} min'.format(np.round(df.delta_time.min(), 3)))
         print('t max : {} min'.format(np.round(df.delta_time.max(), 3)))
 
-        return df, t80, t50, rwc_sup, rwc_inf
+        return df, t80, t50, rwc_sup, rwc_inf, method_of_dfw
 
     def _graph_skeleton(self, df):
         TITLE = str(df[self.SAMPLE_ID].unique()[0])            
@@ -238,17 +270,17 @@ class gminComput(ParseTreeFolder):
         # ax1.tick_params(axis='y', labelcolor=color)
         # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])
 
-        def move_figure(f, x, y):
-                """Move figure's upper left corner to pixel (x, y)"""
-                backend = matplotlib.get_backend()
-                if backend == 'TkAgg':
-                    f.canvas.manager.window.wm_geometry("+%d+%d" % (x, y))
-                elif backend == 'WXAgg':
-                    f.canvas.manager.window.SetPosition((x, y))
-                else:
-                    # This works for QT and GTK
-                    # You can also use window.setGeometry
-                    f.canvas.manager.window.move(x, y)       
+        # def move_figure(f, x, y):
+        #         """Move figure's upper left corner to pixel (x, y)"""
+        #         backend = matplotlib.get_backend()
+        #         if backend == 'TkAgg':
+        #             f.canvas.manager.window.wm_geometry("+%d+%d" % (x, y))
+        #         elif backend == 'WXAgg':
+        #             f.canvas.manager.window.SetPosition((x, y))
+        #         else:
+        #             # This works for QT and GTK
+        #             # You can also use window.setGeometry
+        #             f.canvas.manager.window.move(x, y)       
         
            
         if (self.action_choice =='1'):
@@ -260,7 +292,7 @@ class gminComput(ParseTreeFolder):
                     fig, ax1, TITLE = self._graph_skeleton(df)
                     
                     try:
-                        move_figure(fig, 800, 0) 
+                        self._move_figure(fig, 800, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')  
@@ -268,7 +300,7 @@ class gminComput(ParseTreeFolder):
                     selected_points = fig.ginput(2)
 
                     try:
-                        move_figure(fig, 800, 0) 
+                        self._move_figure(fig, 800, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')   
@@ -286,7 +318,7 @@ class gminComput(ParseTreeFolder):
                     gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
 
                     try:
-                        move_figure(fig, 800, 0) 
+                        self._move_figure(fig, 800, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')              
@@ -352,7 +384,13 @@ class gminComput(ParseTreeFolder):
             
             # close the graph on a click
             # plt.pause(PAUSE_GRAPH)
-            if (self.action_choice =='2'):
+            if (self.action_choice =='2'):                
+                try:
+                    self._move_figure(fig, 800, 0) 
+                    # print('fig pos set')
+                except:
+                    print('fig pos not set') 
+                plt.show(block=False)
                 plt.waitforbuttonpress(0)
 
             figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'

@@ -56,6 +56,14 @@ if __name__=="__main__":
     parser.add_argument('-rh','--rh', default='RH', 
                         help='which RH col', 
                         type = str)
+
+    parser.add_argument('-fw','--fresh_weight', default='Fresh_weight', 
+                        help='which fresh weight col', 
+                        type = str)
+
+    parser.add_argument('-dw','--dry_weight', default='Dry_weight', 
+                        help='which dry weight col', 
+                        type = str)       
                         
     parser.add_argument('-p','--patm', default='Patm', 
                         help='which P col', 
@@ -87,6 +95,9 @@ if __name__=="__main__":
     rwc_inf = args.rwc_inf
     rwc_sup = args.rwc_sup
 
+    fresh_weight = args.fresh_weight
+    dry_weight =  args.dry_weight
+
     # assert rwc_inf+rwc_sup < 100, 'sum of rwc boundaries should be < 100'
     assert rwc_inf < rwc_sup, 'rwc boundary inf should be < to rwc boundary sup'
 
@@ -108,7 +119,9 @@ if __name__=="__main__":
                                    patm = patm,
                                    area = area,                                 
                                    rwc_inf = rwc_inf,
-                                   rwc_sup = rwc_sup
+                                   rwc_sup = rwc_sup,
+                                   fresh_weight = fresh_weight,
+                                   dry_weight = dry_weight
                                   )
 
     parse_folder.parse_folder()    
