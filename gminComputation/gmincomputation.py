@@ -203,6 +203,7 @@ class gminComput(ParseTreeFolder):
 
         # Make the shaded region
         figname = self.fig_folder + '/' + 'rwc' + '/' + TITLE + '.png'
+        figname = self._test_saving_file(figname = figname)
         plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
         # plt.pause(PAUSE_GRAPH)
         #plt.show()
@@ -247,6 +248,22 @@ class gminComput(ParseTreeFolder):
         return fig, ax1, TITLE
     
 
+    def _test_saving_file(self, figname):
+
+        if os.path.isfile(figname):
+            print ("File exist")
+            i=0
+            fig = figname
+            while True:
+                fig = os.path.splitext(figname)[0] + str('_') + str(i) + '.png'
+                i+=1                    
+                if not os.path.isfile(fig):                  
+                    break
+            figname = fig
+
+        return figname                
+  
+
     def _plot_gmin(self, df):
         '''
         detection of the crossing point of the rmse error from the exp & linear fitting
@@ -256,32 +273,7 @@ class gminComput(ParseTreeFolder):
         list_of_param=['', '', '', '', '', '']      
         selected_points=''
        
-        # plot the figure of the detected crossing sections  
-        #  
-        # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
-            
-        # fig, ax1 = plt.subplots()
-
-        # plt.title(TITLE)
-        # color = 'tab:blue'
-        # ax1.set_xlabel('time (min)')
-        # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
-        # ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
-        # ax1.tick_params(axis='y', labelcolor=color)
-        # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])
-
-        # def move_figure(f, x, y):
-        #         """Move figure's upper left corner to pixel (x, y)"""
-        #         backend = matplotlib.get_backend()
-        #         if backend == 'TkAgg':
-        #             f.canvas.manager.window.wm_geometry("+%d+%d" % (x, y))
-        #         elif backend == 'WXAgg':
-        #             f.canvas.manager.window.SetPosition((x, y))
-        #         else:
-        #             # This works for QT and GTK
-        #             # You can also use window.setGeometry
-        #             f.canvas.manager.window.move(x, y)       
-        
+       
            
         if (self.action_choice =='1'):
             print('\nPlease select two points on the figure')
@@ -331,6 +323,9 @@ class gminComput(ParseTreeFolder):
 
                     
                     figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+
+                    figname = self._test_saving_file(figname = figname)
+
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
                     
                     plt.close('all')  
@@ -394,6 +389,8 @@ class gminComput(ParseTreeFolder):
                 plt.waitforbuttonpress(0)
 
             figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+            figname = self._test_saving_file(figname = figname)
+            
             plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
 
             # input()
