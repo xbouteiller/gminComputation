@@ -106,6 +106,7 @@ class gminComput(ParseTreeFolder):
     def _compute_rwc(self, df, nmean = 21,  visualise = True):           
 
         from matplotlib.patches import Circle, Wedge, Polygon
+        import warnings
 
         rwc_thressup = self.rwc_sup
         rwc_thresinf = self.rwc_inf
@@ -118,8 +119,10 @@ class gminComput(ParseTreeFolder):
 
 
         try:
-            dry = np.nanmean(df[self.DW].values[-int(nmean):])
-            saturated = np.nanmean(df[self.FW].values[0:nmean])## or np.max() ??        
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=RuntimeWarning)
+                dry = np.nanmean(df[self.DW].values[-int(nmean):])
+                saturated = np.nanmean(df[self.FW].values[0:nmean])## or np.max() ??        
             print('Using provided dry and fresh weight')
             method_of_dfw = 'provided_dry_fresh_weight'
             print('dry: ', dry)
@@ -286,6 +289,7 @@ class gminComput(ParseTreeFolder):
         if (self.action_choice =='1'):
             print('\nPlease select two points on the figure')
             # plt.waitforbuttonpress(0)
+            incr = 0
             while True:
                 try:
                     
@@ -329,14 +333,19 @@ class gminComput(ParseTreeFolder):
                     
                     plt.waitforbuttonpress(0)                   
 
-                    
-                    figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
+                    if incr==0:
+                        figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
 
-                    figname = self._test_saving_file(figname = figname)
+                    if incr == 0:
+                        figname = self._test_saving_file(figname = figname)
+
+                    # print('figname: ', figname)
 
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
                     
                     plt.close('all')  
+
+                    incr += 1
 
                     print('''
                     Enter ctrl + c to stop the loop
