@@ -73,6 +73,20 @@ class gminComput(ParseTreeFolder):
                 response = input(input_string)
             return response
 
+
+    def _keepitornot(self):
+
+        print('''
+        Do you want to keep this values ?
+
+        y: Yes
+        n: No                    
+        ''') 
+
+        what_to_do = self._get_valid_input('What do you want to do ? Choose one of : ', ('y','n'))
+
+        return what_to_do
+
     def _compute_time_delta(self, df):
         # transform time to TRUE date time
         try:
@@ -351,38 +365,13 @@ class gminComput(ParseTreeFolder):
                     Enter ctrl + c to stop the loop
                     ''')
 
-                    time.sleep(2)
-                   
-                    # input()
-                    # print('''
-                    # Do you want to keep these values ?
+                    time.sleep(2)     
 
-                    # y: Yes
-                    # n: No
-                    # ''') 
-                    # keepgoing = self._get_valid_input('Your choice: ', ('y', 'n'))
-                    # if (keepgoing == 'n'):
-                    #     fig, ax1, TITLE = self._graph_skeleton(df)
-                    #     # TITLE = str(df[self.SAMPLE_ID].unique()[0])            
-                
-                    #     # fig, ax1 = plt.subplots()
-
-                    #     # plt.title(TITLE)
-                    #     # color = 'tab:blue'
-                    #     # ax1.set_xlabel('time (min)')
-                    #     # ax1.set_ylabel(TITLE + '\nWeight (g)', color=color)
-                    #     # 
-                    # ax1.plot(df['delta_time'], df[self.YVAR], color=color, linestyle='-', marker='.', label = 'data', alpha = 0.5)
-                    #     # ax1.tick_params(axis='y', labelcolor=color)
-                    #     # ax1.set_ylim([0.9*np.min(df[self.YVAR]), 1.1*np.max(df[self.YVAR])])      
-            
-                    # else:
-                    #     break
                 except KeyboardInterrupt:
                     print('''
                     interrupted!
                     Plotting a new sample!
-                    ''')
+                    ''')                    
                     break
                 
 
@@ -411,7 +400,13 @@ class gminComput(ParseTreeFolder):
             plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
 
             # input()
-            plt.close()   
+            plt.close()
+
+        if self.action_choice != '3':
+            keepit = self._keepitornot()        
+            if (keepit == 'n') :
+                    gmin_mean = 'Removed'
+
 
         
         if (self.action_choice =='1') :

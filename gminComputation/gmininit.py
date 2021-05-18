@@ -483,11 +483,12 @@ class ParseTreeFolder():
 
                         # append df to list
                         list_of_df.append(temp_df)
-                        print(pd.concat(list_of_df))
+                        # print(pd.concat(list_of_df))
                         # global_score = []
                         pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).drop(columns='index').to_csv(self.rep_name+'/GMIN_df_complete.csv', index = False)
                         # time.sleep(1)
                         # print('saved !')
+                    global_score = []
             else:
                 pass
 
