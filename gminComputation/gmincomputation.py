@@ -393,8 +393,9 @@ class gminComput(ParseTreeFolder):
                     print('''
                     Enter ctrl + c to stop the loop
                     ''')
-
-                    time.sleep(2)     
+                    time.sleep(0.1) 
+                    time.sleep(1) 
+                    time.sleep(1)     
 
                 except KeyboardInterrupt:
                     print('''
