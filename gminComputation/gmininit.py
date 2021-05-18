@@ -3,7 +3,7 @@
 print('------------------------------------------------------------------------')
 print('---------------                                    ---------------------')
 print('---------------            gminComputation         ---------------------')
-print('---------------                  V0.8              ---------------------')
+print('---------------                  V1.0              ---------------------')
 print('---------------                                    ---------------------')
 print('------------------------------------------------------------------------')
 
@@ -482,8 +482,11 @@ class ParseTreeFolder():
                         print('\n')
 
                         # append df to list
-                    list_of_df.append(temp_df)
-                    global_score = []
+                        list_of_df.append(temp_df)
+                        global_score = []
+                        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/GMIN_df_complete.csv')
+                        # time.sleep(1)
+                        # print('saved !')
             else:
                 pass
 
