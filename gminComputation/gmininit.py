@@ -483,8 +483,9 @@ class ParseTreeFolder():
 
                         # append df to list
                         list_of_df.append(temp_df)
-                        global_score = []
-                        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/GMIN_df_complete.csv')
+                        print(pd.concat(list_of_df))
+                        # global_score = []
+                        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).drop(columns='index').to_csv(self.rep_name+'/GMIN_df_complete.csv', index = False)
                         # time.sleep(1)
                         # print('saved !')
             else:
@@ -495,7 +496,7 @@ class ParseTreeFolder():
         # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
         # pd.concat(list_of_df).reset_index().explode('Interval_time').to_csv(self.rep_name+'/RMSE_df_complete_full.csv')
         # pd.concat(list_of_df).reset_index().explode('Interval_time').drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/RMSE_df_complete_full_No_duplicates.csv')
-        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).to_csv(self.rep_name+'/GMIN_df_complete.csv')
+        pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).drop(columns='index').to_csv(self.rep_name+'/GMIN_df_complete.csv', index = False)
 
         
 
