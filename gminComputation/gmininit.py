@@ -424,7 +424,7 @@ class ParseTreeFolder():
                         df = gmc._compute_time_delta(df)
 
                         # computing RWC
-                        if (self.action_choice == '2') | (self.action_choice == '3'):
+                        if 1>0:#(self.action_choice == '2') | (self.action_choice == '3'):
                             print('Computing RWC')
                             if self.action_choice == '2':
                                 df, t80, t50, rwc_sup, rwc_inf, method_of_dfw= gmc._compute_rwc(df)
@@ -440,7 +440,7 @@ class ParseTreeFolder():
                             method_of_dfw = None
 
                         # plotting gmin
-                        gs, selected_points = gmc._plot_gmin(df)
+                        gs, selected_points = gmc._plot_gmin(df,t80, t50)
                         if (self.action_choice == '1'):
                             t80 = np.max(selected_points[0][0],0)
                             t50 = selected_points[1][0]

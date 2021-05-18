@@ -243,9 +243,12 @@ class gminComput(ParseTreeFolder):
             # input()
         plt.close() 
 
-        print('Slicing df between RWC80 and RWC50')
-        # df = df[(rwc < rwc_thressup) & (rwc > rwc_thresinf)].copy()
-        df = df[ (df.delta_time.values <= t50) & (df.delta_time.values >= t80)].copy()
+        print('action choice', self.action_choice )
+
+        if self.action_choice !=  '1':
+            print('Slicing df between RWC80 and RWC50')
+            # df = df[(rwc < rwc_thressup) & (rwc > rwc_thresinf)].copy()
+            df = df[ (df.delta_time.values <= t50) & (df.delta_time.values >= t80)].copy()
 
         # print('t min : {} min'.format(df.delta_time.min().round(3)))
         # print('t max : {} min'.format(df.delta_time.max().round(3)))
@@ -289,7 +292,7 @@ class gminComput(ParseTreeFolder):
         return figname                
   
 
-    def _plot_gmin(self, df):
+    def _plot_gmin(self, df, *args):
         '''
         detection of the crossing point of the rmse error from the exp & linear fitting
         yexp & ylin : rmse from the sliding window
@@ -303,11 +306,27 @@ class gminComput(ParseTreeFolder):
         if (self.action_choice =='1'):
             print('\nPlease select two points on the figure')
             # plt.waitforbuttonpress(0)
+            from matplotlib.patches import Circle, Wedge, Polygon
             incr = 0
             while True:
                 try:
                     
                     fig, ax1, TITLE = self._graph_skeleton(df)
+
+                    t80 = args[0]
+                    t50 = args[1]
+
+                    # print(t80)ax1.get_ylim()[1]
+                    # print(t50)
+
+                    verts = [[0, 0],[t80, 0], [t80, ax1.get_ylim()[1]] , [0, ax1.get_ylim()[1]]]
+                    poly = Polygon(verts, facecolor='grey', alpha = 0.5)
+                    ax1.add_patch(poly)   
+
+                    verts = [[t50, 0],[np.max(df['delta_time'].values), 0], [np.max(df['delta_time'].values), ax1.get_ylim()[1]], [t50, ax1.get_ylim()[1]] ]
+                    poly = Polygon(verts, facecolor='grey', alpha = 0.5)
+                    ax1.add_patch(poly)
+
                     
                     try:
                         self._move_figure(fig, 800, 0) 
@@ -332,6 +351,15 @@ class gminComput(ParseTreeFolder):
 
                     
                     fig, ax1, TITLE = self._graph_skeleton(df)
+
+                    verts = [[0, 0],[t80, 0], [t80, ax1.get_ylim()[1]] , [0, ax1.get_ylim()[1]]]
+                    poly = Polygon(verts, facecolor='grey', alpha = 0.5)
+                    ax1.add_patch(poly)   
+
+                    verts = [[t50, 0],[np.max(df['delta_time'].values), 0], [np.max(df['delta_time'].values), ax1.get_ylim()[1]], [t50, ax1.get_ylim()[1]] ]
+                    poly = Polygon(verts, facecolor='grey', alpha = 0.5)
+                    ax1.add_patch(poly)
+
                     ax1.plot(Xreg, fitted_values, c = 'black', lw = 2)                 
                     gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
 
@@ -358,6 +386,7 @@ class gminComput(ParseTreeFolder):
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
                     
                     plt.close('all')  
+                    plt.close('all') 
 
                     incr += 1
 
