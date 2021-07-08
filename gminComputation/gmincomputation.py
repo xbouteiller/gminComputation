@@ -87,6 +87,22 @@ class gminComput(ParseTreeFolder):
 
         return what_to_do
 
+    
+    def _keepitornot_3(self):
+
+        print('''
+        Do you want to keep this values ?
+
+        y: Yes
+        n: No, discard value
+        m: Manual selection, chose points manually
+        ''') 
+
+        what_to_do = self._get_valid_input('What do you want to do ? Choose one of : ', ('y','n','m'))
+
+        return what_to_do
+
+
     def _compute_time_delta(self, df):
         # transform time to TRUE date time
         try:
@@ -441,13 +457,17 @@ class gminComput(ParseTreeFolder):
             plt.close()
         relaunch = False
         if self.action_choice != '3':
-            keepit = self._keepitornot()        
+            if self.action_choice == '1':
+                keepit = self._keepitornot()
+            else:
+                keepit = self._keepitornot_3()        
             if (keepit == 'n') & (self.action_choice == '1'):
                 gmin_mean = 'Removed'
-            if (keepit == 'n') & (self.action_choice == '2'):
+            if (keepit == 'm') & (self.action_choice == '2'):
                 print('Lets select points manually')
                 relaunch = True
-                
+            if (keepit == 'n') & (self.action_choice == '2'):
+                gmin_mean = 'Removed'
             
 
 
