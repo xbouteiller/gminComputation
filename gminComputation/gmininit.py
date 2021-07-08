@@ -3,7 +3,7 @@
 print('------------------------------------------------------------------------')
 print('---------------                                    ---------------------')
 print('---------------            gminComputation         ---------------------')
-print('---------------                  V1.0              ---------------------')
+print('---------------                  V1.1              ---------------------')
 print('---------------                                    ---------------------')
 print('------------------------------------------------------------------------')
 
@@ -323,13 +323,19 @@ class ParseTreeFolder():
         
 
     def _create_saving_folder(self):
+        from datetime import date
+
+        today = date.today()
+        d4 = today.strftime("%b-%d-%Y")
+
+
         try:
             self.fig_folder
         except:
             self.fig_folder = 'None'
 
         if self.fig_folder == 'None':
-            starting_name = 'output_fig'
+            starting_name = str(d4)+'_'+'output_fig'
             i = 0
             while True:
                 i+=1
@@ -348,7 +354,7 @@ class ParseTreeFolder():
             self.rep_name = 'None'
         
         if self.rep_name == 'None':
-            starting_name = 'output_files'
+            starting_name = str(d4)+'_'+'output_files'
             i = 0
             while True:
                 i+=1
@@ -402,6 +408,7 @@ class ParseTreeFolder():
                     for sample in dffile[self.SAMPLE_ID].unique():            
                         self.sample = sample
                         df = dffile.loc[dffile[self.SAMPLE_ID]==sample,:].copy().reset_index()
+                        df_bak = df.copy()
                         # Analysing
                         print('Analysing: {}'.format(sample))
 
@@ -440,7 +447,57 @@ class ParseTreeFolder():
                             method_of_dfw = None
 
                         # plotting gmin
-                        gs, selected_points = gmc._plot_gmin(df,t80, t50)
+                        gs, selected_points, relaunch = gmc._plot_gmin(df,t80, t50)
+
+
+                        # Creating a backup of action choice
+                        action_choice_bak = self.action_choice
+
+
+                        if relaunch:
+                             # initialising gmin computation class
+                            df = df_bak.copy()
+                            self.action_choice = '1'
+                            gmc = gminComput(self.TIME_COL,
+                                            self.SAMPLE_ID,
+                                            self.YVAR,
+                                            self.T,
+                                            self.RH,
+                                            self.PATM,
+                                            self.AREA,
+                                            self.rwc_sup,
+                                            self.rwc_inf, 
+                                            self.action_choice,
+                                            self.fig_folder,
+                                            self.rep_name,
+                                            self.FW,
+                                            self.DW)
+
+                            print('choice: ', gmc.action_choice)
+                            # computing time delta
+                            df = gmc._compute_time_delta(df)
+
+                            # computing RWC
+                            if 1>0:#(self.action_choice == '2') | (self.action_choice == '3'):
+                                print('Computing RWC')
+                                if self.action_choice == '2':
+                                    df, t80, t50, rwc_sup, rwc_inf, method_of_dfw= gmc._compute_rwc(df)
+                                else:
+                                    df, t80, t50, rwc_sup, rwc_inf, method_of_dfw = gmc._compute_rwc(df, visualise = False)
+                                # self.t80 = t80
+                                # self.t50 = t50
+                            else:
+                                t80 = None
+                                t50 = None
+                                rwc_sup = None
+                                rwc_inf = None
+                                method_of_dfw = None
+
+                            # plotting gmin
+                            gs, selected_points, relaunch = gmc._plot_gmin(df,t80, t50)
+
+                            
+
                         if (self.action_choice == '1'):
                             t80 = np.max(selected_points[0][0],0)
                             t50 = selected_points[1][0]
@@ -449,6 +506,8 @@ class ParseTreeFolder():
 
                         gs.extend([rwc_sup, rwc_inf, t80, t50, method_of_dfw])
                         # print('gs: ', gs)
+
+                       
 
                         global_score.append(gs)   
 
@@ -487,7 +546,13 @@ class ParseTreeFolder():
                         # global_score = []
                         pd.concat(list_of_df).reset_index().drop_duplicates(subset=['Campaign','index','Sample_ID','slope']).drop(columns='index').to_csv(self.rep_name+'/GMIN_df_complete.csv', index = False)
                         # time.sleep(1)
-                        # print('saved !')
+                        # print('saved !') 
+                        # 
+                        #  Resetting action choice to initial value
+                        self.action_choice = action_choice_bak
+
+
+
                     global_score = []
             else:
                 pass

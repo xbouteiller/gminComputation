@@ -12,7 +12,7 @@ for p in path:
 	nfold=0
 	for _, dirlist, _ in genobj:
 		for i in dirlist: #checking if a folder called 1 exsists 
-		    if re.match('output', i):
+		    if re.search(r'output', i):
 		    	shutil.rmtree(p+'/'+i)
 		    	nfold+=1
 		    	print('n of removed folder : {}'.format(nfold))

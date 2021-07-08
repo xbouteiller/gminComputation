@@ -1,7 +1,7 @@
 # Python Program for computing leaf conductance
 
 
-Current version is: **1.0**
+Current version is: **1.1**
 
 <img src="img/B17_LITU_BL_11.png" width="75%" height="75%">
 

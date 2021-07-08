@@ -80,7 +80,7 @@ class gminComput(ParseTreeFolder):
         Do you want to keep this values ?
 
         y: Yes
-        n: No                    
+        n: No
         ''') 
 
         what_to_do = self._get_valid_input('What do you want to do ? Choose one of : ', ('y','n'))
@@ -243,11 +243,12 @@ class gminComput(ParseTreeFolder):
             # input()
         plt.close() 
 
-        print('action choice', self.action_choice )
+        # print('action choice', self.action_choice )
 
         if self.action_choice !=  '1':
             print('Slicing df between RWC80 and RWC50')
             # df = df[(rwc < rwc_thressup) & (rwc > rwc_thresinf)].copy()
+            # df_bak = df.copy()
             df = df[ (df.delta_time.values <= t50) & (df.delta_time.values >= t80)].copy()
 
         # print('t min : {} min'.format(df.delta_time.min().round(3)))
@@ -373,7 +374,8 @@ class gminComput(ParseTreeFolder):
                     plt.show(block=False)
                     # print('just before press')
                     
-                    plt.waitforbuttonpress(0)                   
+                    plt.waitforbuttonpress(0)                      
+                
 
                     if incr==0:
                         figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
@@ -385,8 +387,14 @@ class gminComput(ParseTreeFolder):
 
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
                     
-                    plt.close('all')  
-                    plt.close('all') 
+                    plt.close('all')
+                    plt.close('all')
+
+                    # while True: 
+                    #     try: 
+                    #         plt.close('all')
+                    #     except:
+                    #         break
 
                     incr += 1
 
@@ -431,11 +439,16 @@ class gminComput(ParseTreeFolder):
 
             # input()
             plt.close()
-
+        relaunch = False
         if self.action_choice != '3':
             keepit = self._keepitornot()        
-            if (keepit == 'n') :
-                    gmin_mean = 'Removed'
+            if (keepit == 'n') & (self.action_choice == '1'):
+                gmin_mean = 'Removed'
+            if (keepit == 'n') & (self.action_choice == '2'):
+                print('Lets select points manually')
+                relaunch = True
+                
+            
 
 
         
@@ -443,7 +456,7 @@ class gminComput(ParseTreeFolder):
             gs = [TITLE, [i[0] for i in selected_points ], slope, rsquared, gmin_mean, list_of_param]
         else:       
             gs = [TITLE, Xidx, slope, rsquared, gmin_mean, list_of_param]
-        return gs, selected_points
+        return gs, selected_points, relaunch
 
 
 
