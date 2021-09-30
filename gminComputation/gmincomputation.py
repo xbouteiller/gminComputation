@@ -248,7 +248,7 @@ class gminComput(ParseTreeFolder):
         figname = self._test_saving_file(figname = figname)
         plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
         # plt.pause(PAUSE_GRAPH)
-        #plt.show()
+        plt.show(block=False)
         if visualise:
             try:
                 self._move_figure(fig, self.screen_move, 0) 
