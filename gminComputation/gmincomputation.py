@@ -19,8 +19,6 @@ from tkinter.filedialog import askopenfilename, askdirectory
 
 from .gmininit import ParseTreeFolder
 
-
-
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
 class gminComput(ParseTreeFolder):
@@ -39,7 +37,8 @@ class gminComput(ParseTreeFolder):
                 figfolder,
                 repfolder,
                 fresh_weight,
-                dry_weight ):
+                dry_weight,
+                screen_move):
 
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
@@ -59,6 +58,8 @@ class gminComput(ParseTreeFolder):
 
         self.fig_folder = figfolder
         self.rep_name = repfolder
+
+        self.screen_move = screen_move
     
     def _get_valid_input(self, input_string, valid_options):
             '''
@@ -250,14 +251,15 @@ class gminComput(ParseTreeFolder):
         #plt.show()
         if visualise:
             try:
-                self._move_figure(fig, 800, 0) 
+                self._move_figure(fig, self.screen_move, 0) 
                 # print('fig pos set')
             except:
                 print('fig pos not set') 
             plt.show(block=False)
             plt.waitforbuttonpress(0)
+            plt.close('all')
             # input()
-        plt.close() 
+        plt.close('all') 
 
         # print('action choice', self.action_choice )
 
@@ -346,7 +348,7 @@ class gminComput(ParseTreeFolder):
 
                     
                     try:
-                        self._move_figure(fig, 800, 0) 
+                        self._move_figure(fig, self.screen_move, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')  
@@ -354,7 +356,7 @@ class gminComput(ParseTreeFolder):
                     selected_points = fig.ginput(2)
 
                     try:
-                        self._move_figure(fig, 800, 0) 
+                        self._move_figure(fig, self.screen_move, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')   
@@ -381,7 +383,7 @@ class gminComput(ParseTreeFolder):
                     gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=selected_points[0][0], t2 = selected_points[1][0])
 
                     try:
-                        self._move_figure(fig, 800, 0) 
+                        self._move_figure(fig, self.screen_move, 0) 
                         # print('fig pos set')
                     except:
                         print('fig pos not set')              
@@ -392,6 +394,7 @@ class gminComput(ParseTreeFolder):
                     
                     plt.waitforbuttonpress(0)                      
                 
+                    #plt.close('all')
 
                     if incr==0:
                         figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
@@ -403,7 +406,6 @@ class gminComput(ParseTreeFolder):
 
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
                     
-                    plt.close('all')
                     plt.close('all')
 
                     # while True: 
@@ -441,12 +443,13 @@ class gminComput(ParseTreeFolder):
             # plt.pause(PAUSE_GRAPH)
             if (self.action_choice =='2'):                
                 try:
-                    self._move_figure(fig, 800, 0) 
+                    self._move_figure(fig, self.screen_move, 0) 
                     # print('fig pos set')
                 except:
                     print('fig pos not set') 
                 plt.show(block=False)
                 plt.waitforbuttonpress(0)
+                plt.close('all')
 
             figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
             figname = self._test_saving_file(figname = figname)
@@ -454,7 +457,7 @@ class gminComput(ParseTreeFolder):
             plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
 
             # input()
-            plt.close()
+            plt.close('all')
         relaunch = False
         if self.action_choice != '3':
             if self.action_choice == '1':

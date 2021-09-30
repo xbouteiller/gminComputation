@@ -3,7 +3,7 @@
 print('------------------------------------------------------------------------')
 print('---------------                                    ---------------------')
 print('---------------            gminComputation         ---------------------')
-print('---------------                  V1.2              ---------------------')
+print('---------------                  V1.3              ---------------------')
 print('---------------                                    ---------------------')
 print('------------------------------------------------------------------------')
 
@@ -91,7 +91,8 @@ class ParseTreeFolder():
                 rwc_sup,
                 rwc_inf,
                 fresh_weight,
-                dry_weight):
+                dry_weight,
+                screen_move):
 
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
@@ -106,6 +107,8 @@ class ParseTreeFolder():
 
         self.rwc_sup = rwc_sup
         self.rwc_inf = rwc_inf
+
+        self.screen_move = screen_move
 
         # global class variables
         self.global_score = []        
@@ -426,7 +429,8 @@ class ParseTreeFolder():
                                         self.fig_folder,
                                         self.rep_name,
                                         self.FW,
-                                        self.DW)
+                                        self.DW,
+                                        self.screen_move)
                         # computing time delta
                         df = gmc._compute_time_delta(df)
 
@@ -471,7 +475,8 @@ class ParseTreeFolder():
                                             self.fig_folder,
                                             self.rep_name,
                                             self.FW,
-                                            self.DW)
+                                            self.DW,
+                                            self.screen_move)
 
                             print('choice: ', gmc.action_choice)
                             # computing time delta

@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "../../formanrisk"
+		},
+		{
+			"path": "../../WebP"
+		},
+		{
+			"path": "../../cavitron"
+		},
+		{
+			"path": "../../DetectEvent"
+		},
+		{
+			"path": "../../imageFolder"
+		},
+		{
+			"path": "../../FindWord"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../FeedDB"
+		}
+	],
+	"settings": {}
+}

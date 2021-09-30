@@ -80,6 +80,10 @@ if __name__=="__main__":
     parser.add_argument('-ri','--rwc_inf', default=50, 
                         help='lower percentage boundary of RWC [0 .. 100]',                         
                         type=float_range(0,100))
+    
+    parser.add_argument('-sm','--screen_move', default=800, 
+                        help='parameter for avoidinf figure and terminal overlapping',                         
+                        type=float_range(0,10000))
 
 
     args = parser.parse_args()
@@ -97,6 +101,8 @@ if __name__=="__main__":
 
     fresh_weight = args.fresh_weight
     dry_weight =  args.dry_weight
+
+    screen_move = args.screen_move
 
     # assert rwc_inf+rwc_sup < 100, 'sum of rwc boundaries should be < 100'
     assert rwc_inf < rwc_sup, 'rwc boundary inf should be < to rwc boundary sup'
@@ -121,7 +127,8 @@ if __name__=="__main__":
                                    rwc_inf = rwc_inf,
                                    rwc_sup = rwc_sup,
                                    fresh_weight = fresh_weight,
-                                   dry_weight = dry_weight
+                                   dry_weight = dry_weight,
+                                   screen_move = screen_move
                                   )
 
     parse_folder.parse_folder()    
