@@ -218,8 +218,8 @@ class gminComput(ParseTreeFolder):
         
 
         TITLE = str(df[self.SAMPLE_ID].unique()[0])            
-            
         fig, ax1 = plt.subplots()
+        print('open ...')
 
         plt.title(TITLE)
         color = 'tab:blue'
@@ -247,8 +247,11 @@ class gminComput(ParseTreeFolder):
         figname = self.fig_folder + '/' + 'rwc' + '/' + TITLE + '.png'
         figname = self._test_saving_file(figname = figname)
         plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+        print('plotted from here')
         # plt.pause(PAUSE_GRAPH)
-        plt.show(block=False)
+        #plt.show(block=False)
+        #print('open')
+        #plt.close('all')
         if visualise:
             try:
                 self._move_figure(fig, self.screen_move, 0) 
@@ -256,10 +259,14 @@ class gminComput(ParseTreeFolder):
             except:
                 print('fig pos not set') 
             plt.show(block=False)
+            #print('open')
             plt.waitforbuttonpress(0)
             plt.close('all')
+            #print('close', plt.get_fignums())
             # input()
         plt.close('all') 
+        #print('close', plt.get_fignums())
+
 
         # print('action choice', self.action_choice )
 
@@ -279,8 +286,9 @@ class gminComput(ParseTreeFolder):
 
     def _graph_skeleton(self, df):
         TITLE = str(df[self.SAMPLE_ID].unique()[0])            
-            
-        fig, ax1 = plt.subplots()
+        #plt.ioff()
+        fig, ax1 = plt.subplots()#subplots() 
+        #print('open')
 
         plt.title(TITLE)
         color = 'tab:blue'
@@ -329,8 +337,13 @@ class gminComput(ParseTreeFolder):
             incr = 0
             while True:
                 try:
-                    
+                    if incr != 0:
+                        time.sleep(0.5) 
+                        time.sleep(1) 
+                        time.sleep(1)
+                        
                     fig, ax1, TITLE = self._graph_skeleton(df)
+                    
 
                     t80 = args[0]
                     t50 = args[1]
@@ -352,25 +365,28 @@ class gminComput(ParseTreeFolder):
                         # print('fig pos set')
                     except:
                         print('fig pos not set')  
-
-                    selected_points = fig.ginput(2)
-
-                    try:
-                        self._move_figure(fig, self.screen_move, 0) 
-                        # print('fig pos set')
-                    except:
-                        print('fig pos not set')   
-
-                    plt.show(block=False)
-                    plt.close('all')
                     
+                    #plt.show(block=False)
+                    selected_points = fig.ginput(2)
+                    print('2 points were selected')
+
+                    # try:
+                    #     self._move_figure(fig, self.screen_move, 0) 
+                    #     # print('fig pos set')
+                    # except:
+                    #     print('fig pos not set')   
+
+                    time.sleep(0.1)
+                    plt.close('all')
+                    time.sleep(0.1)
+                    print('close selection', plt.get_fignums())
                     
                     slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,selected_points[0], True, selected_points[1])
                     
 
                     
                     fig, ax1, TITLE = self._graph_skeleton(df)
-
+                    
                     verts = [[0, 0],[t80, 0], [t80, ax1.get_ylim()[1]] , [0, ax1.get_ylim()[1]]]
                     poly = Polygon(verts, facecolor='grey', alpha = 0.5)
                     ax1.add_patch(poly)   
@@ -386,15 +402,10 @@ class gminComput(ParseTreeFolder):
                         self._move_figure(fig, self.screen_move, 0) 
                         # print('fig pos set')
                     except:
-                        print('fig pos not set')              
-                        
-
-                    plt.show(block=False)
-                    # print('just before press')
-                    
-                    plt.waitforbuttonpress(0)                      
+                        print('fig pos not set')                                      
                 
                     #plt.close('all')
+                    #print('close after 1', plt.get_fignums())
 
                     if incr==0:
                         figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
@@ -402,11 +413,21 @@ class gminComput(ParseTreeFolder):
                     if incr == 0:
                         figname = self._test_saving_file(figname = figname)
 
-                    # print('figname: ', figname)
-
                     plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+
+
+                    # print('figname: ', figname)
+                    #plt.show(block=False)
+                    # print('just before press')
                     
+                    #plt.show(block = False)
+                    plt.waitforbuttonpress(0)   
                     plt.close('all')
+                    time.sleep(0.1)
+                    print('close after 2', plt.get_fignums())
+
+
+                    
 
                     # while True: 
                     #     try: 
@@ -419,9 +440,7 @@ class gminComput(ParseTreeFolder):
                     print('''
                     Enter ctrl + c to stop the loop
                     ''')
-                    time.sleep(0.1) 
-                    time.sleep(1) 
-                    time.sleep(1)     
+                         
 
                 except KeyboardInterrupt:
                     print('''
@@ -433,31 +452,39 @@ class gminComput(ParseTreeFolder):
 
 
         else:
-            fig, ax1, TITLE = self._graph_skeleton(df)
+            fig, ax1, TITLE = self._graph_skeleton(df) 
+            
             Xidx = df['delta_time'].values[0]
             slope, intercept, rsquared, fitted_values, Xreg = self._compute_slope(df,Xidx1=Xidx)
-            ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2)
+            ax1.plot(Xreg, fitted_values, c = colors['black'], lw = 2) 
+
             gmin_mean, list_of_param = self._compute_gmin(df=df, slope=slope, t1=Xidx, t2 = None)        
             
             # close the graph on a click
             # plt.pause(PAUSE_GRAPH)
-            if (self.action_choice =='2'):                
+            if (self.action_choice =='2'): 
+                             
                 try:
                     self._move_figure(fig, self.screen_move, 0) 
                     # print('fig pos set')
                 except:
                     print('fig pos not set') 
-                plt.show(block=False)
-                plt.waitforbuttonpress(0)
-                plt.close('all')
+                
+                #plt.close('all')
 
             figname = self.fig_folder + '/' + 'gmin' + '/' + TITLE + '.png'
             figname = self._test_saving_file(figname = figname)
+            #plt.show(block=False)
             
             plt.savefig(figname, dpi = 420, bbox_inches = 'tight')
+            if self.action_choice == '3':
+                plt.close('all')
+            else:
+                plt.waitforbuttonpress(0)
+                plt.close('all')
+            #print('close', plt.get_fignums())
 
-            # input()
-            plt.close('all')
+
         relaunch = False
         if self.action_choice != '3':
             if self.action_choice == '1':

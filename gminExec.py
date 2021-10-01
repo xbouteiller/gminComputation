@@ -1,7 +1,8 @@
 #!/home/xavier/anaconda3/bin/python
 # python Leaf_exec.py -tr 4 -fr 2 -td 2 -fd 2 
 # python Leaf_exec.py --transfo_rmse 4 --fit_rmse 2 --transfo_diff 2 --fit_diff 2 
-
+# import matplotlib
+# matplotlib.use("Qt5agg")
 
 def float_range(mini,maxi):
     """Return function handle of an argument type function for 

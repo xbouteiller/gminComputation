@@ -3,7 +3,7 @@
 print('------------------------------------------------------------------------')
 print('---------------                                    ---------------------')
 print('---------------            gminComputation         ---------------------')
-print('---------------                  V1.3              ---------------------')
+print('---------------                  V1.4              ---------------------')
 print('---------------                                    ---------------------')
 print('------------------------------------------------------------------------')
 
@@ -28,7 +28,8 @@ from tkinter.filedialog import askopenfilename, askdirectory
 time.sleep(0.5)
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
-
+# import matplotlib
+# matplotlib.use("Qt5agg")
 
 
 
