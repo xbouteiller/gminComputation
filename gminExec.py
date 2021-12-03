@@ -86,6 +86,11 @@ if __name__=="__main__":
                         help='parameter for avoidinf figure and terminal overlapping',                         
                         type=float_range(0,10000))
 
+    parser.add_argument('-uc','--use_conf', default='False', 
+                        help='use conf file ?',
+                        choices=['True', 'False'],                         
+                        type=str)
+
 
     args = parser.parse_args()
     
@@ -104,6 +109,8 @@ if __name__=="__main__":
     dry_weight =  args.dry_weight
 
     screen_move = args.screen_move
+
+    use_conf = args.use_conf
 
     # assert rwc_inf+rwc_sup < 100, 'sum of rwc boundaries should be < 100'
     assert rwc_inf < rwc_sup, 'rwc boundary inf should be < to rwc boundary sup'
@@ -129,7 +136,8 @@ if __name__=="__main__":
                                    rwc_sup = rwc_sup,
                                    fresh_weight = fresh_weight,
                                    dry_weight = dry_weight,
-                                   screen_move = screen_move
+                                   screen_move = screen_move,
+                                   use_conf = use_conf
                                   )
 
     parse_folder.parse_folder()    

@@ -22,7 +22,7 @@ import re
 import time  
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename, askdirectory
-
+import configparser
 
 
 time.sleep(0.5)
@@ -93,7 +93,8 @@ class ParseTreeFolder():
                 rwc_inf,
                 fresh_weight,
                 dry_weight,
-                screen_move):
+                screen_move,
+                use_conf):
 
         self.TIME_COL = time_col
         self.SAMPLE_ID = sample_id
@@ -111,37 +112,46 @@ class ParseTreeFolder():
 
         self.screen_move = screen_move
 
+        self.use_conf = use_conf
+
         # global class variables
         self.global_score = []        
 
+        if self.use_conf == 'True':
+            self._parse_conf()            
+            self.path  = self.parser.get("config", "path")
+            self.method = self.parser.get("config", "method")
+            self.file_or_folder='1'
+            assert self.method in ['manual','semi','full'], 'method should be one of manual, semi, full'
 
-        print('''
-        WELCOME TO GMIN COMPUTATION
+        else:
+            print('''
+            WELCOME TO GMIN COMPUTATION
 
-        What do you want to do ?
+            What do you want to do ?
 
-        1: Parse all files from a folder
-        2: Select some ID from a file        
-        ''')
-        self.file_or_folder = self._get_valid_input('What do you want to do ? Choose one of : ', ('1','2'))
+            1: Parse all files from a folder
+            2: Select some ID from a file        
+            ''')
+            self.file_or_folder = self._get_valid_input('What do you want to do ? Choose one of : ', ('1','2'))
 
-        # fixed value for self.file_or_folder attribute, to be cleaned in the future
-    
-        # self.file_or_folder = self._get_valid_input('Type 1 to start : ', ('1'))
-        if self.file_or_folder== '1':
-            root_path = os.getcwd()
-            Tk().withdraw()
-            folder = askdirectory(title = 'What is the root folder that you want to parse ?',
-                                initialdir = root_path)            
-            self.path = folder
-            print('\n\nroot path is {}'.format(self.path))
-            
-        if self.file_or_folder== '2':
-            Tk().withdraw()
-            file = askopenfilename(title='What is the file that you want to check ?')
-            self.path = file.replace('/','/')
-            print('\n\nfile path is {}'.format(self.path)) 
-            print('\n')
+            # fixed value for self.file_or_folder attribute, to be cleaned in the future
+        
+            # self.file_or_folder = self._get_valid_input('Type 1 to start : ', ('1'))
+            if self.file_or_folder== '1':
+                root_path = os.getcwd()
+                Tk().withdraw()
+                folder = askdirectory(title = 'What is the root folder that you want to parse ?',
+                                    initialdir = root_path)            
+                self.path = folder
+                print('\n\nroot path is {}'.format(self.path))
+                
+            if self.file_or_folder== '2':
+                Tk().withdraw()
+                file = askopenfilename(title='What is the file that you want to check ?')
+                self.path = file.replace('/','/')
+                print('\n\nfile path is {}'.format(self.path)) 
+                print('\n')
 
 
         # options allowed for the action method    
@@ -153,7 +163,13 @@ class ParseTreeFolder():
         # "4": self.erase,
         # "5": self.extract_strings_and_nums
         }       
-    
+    def _parse_conf(self):
+        '''
+        parse the conf file
+        '''
+        #print(os.getcwd())        
+        self.parser = configparser.ConfigParser()
+        self.parser.read("conf") 
 
     def _listdir_fullpath(self, p, s):
         '''
@@ -228,15 +244,13 @@ class ParseTreeFolder():
     
     def run(self):
         '''Display the menu and respond to choices.'''
-        self.firstchoice = 0
-        while True:
-            self.display_menu()
-            if self.firstchoice == 0:
-                choice = input("Enter an option: ")
-            else:
-                choice = '4'
 
-            # redirection to the self.choices attribute in the __init__
+        if self.use_conf == 'True':
+            dictkey = {'manual':'1', 
+            'semi':'2', 
+            'full':'3'}
+            choice = dictkey[self.method]
+
             action = self.choices.get(choice)
 
             self.action_choice = choice
@@ -246,7 +260,27 @@ class ParseTreeFolder():
             else:
                 print("{0} is not a valid choice".format(choice))
                 self.run()
-            self.firstchoice += 1
+
+        else:
+            self.firstchoice = 0
+            while True:
+                self.display_menu()
+                if self.firstchoice == 0:
+                    choice = input("Enter an option: ")
+                else:
+                    choice = '4'
+
+                # redirection to the self.choices attribute in the __init__
+                action = self.choices.get(choice)
+
+                self.action_choice = choice
+
+                if action:
+                    action()
+                else:
+                    print("{0} is not a valid choice".format(choice))
+                    self.run()
+                self.firstchoice += 1
 
 
     def _quit(self):
