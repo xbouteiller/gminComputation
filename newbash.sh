@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for var in {0..90..1}
+for var in {30..90..10}
 
 do	
 	echo $var

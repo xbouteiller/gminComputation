@@ -69,8 +69,8 @@ class gminComput(ParseTreeFolder):
             input_string : question
             valid_options : authorized answers
             '''
-            input_string += "({}) ".format(", ".join(valid_options))
-            response = input(input_string)
+            input_string += "({}, (default: {})) ".format(", ".join(valid_options), valid_options[0])
+            response = input(input_string) or valid_options[0]
             while response.lower() not in valid_options:
                 response = input(input_string)
             return response
@@ -118,7 +118,8 @@ class gminComput(ParseTreeFolder):
             # convert time to minute
             df['delta_time'] = df['delta_time'].dt.total_seconds() / 60 # minutes 
 
-        # print(df.head())
+        #print(df[['TIME_COL2','delta_time']].head(10))
+        #time.sleep(1)
 
         return df
 
